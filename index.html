@@ -360,19 +360,27 @@ section{padding:25px 0 48px}
 .player{padding:15px 16px}
 .track-row{display:flex;justify-content:space-between;font-size:7px;color:#64718a}
 
-/* SEEK BAR with 🌨️ pointer */
+/* SEEK BAR with 🌨️ pointer (enhanced) */
 .seek{
-  height:3px;background:#1a2844;margin:9px 0 14px;position:relative;
+  height:4px;background:#1a2844;margin:12px 0 18px;position:relative;
+  border-radius:99px;overflow:visible;
 }
-.seek i{display:block;height:100%;width:0;background:var(--blue);
-  box-shadow:0 0 8px rgba(76,130,255,.55);transition:width .2s linear}
+.seek i{
+  display:block;height:100%;width:0;background:var(--blue);
+  box-shadow:0 0 10px rgba(76,130,255,.75);
+  border-radius:99px;transition:width .2s linear;
+}
 .seek-dot{
   position:absolute;top:50%;left:0;
-  transform:translate(-50%,-52%);
-  font-size:12px;line-height:1;pointer-events:none;
-  filter:drop-shadow(0 0 6px rgba(120,170,255,.9));
+  transform:translate(-50%,-50%);
+  font-size:15px;line-height:1;pointer-events:none;
+  filter:
+    drop-shadow(0 0 4px rgba(180,215,255,1))
+    drop-shadow(0 0 12px rgba(76,130,255,.9))
+    drop-shadow(0 0 22px rgba(76,130,255,.55));
   animation:dotFloat 2s ease-in-out infinite;
   transition:left .2s linear;
+  z-index:5;
 }
 
 .controls{display:flex;align-items:center;justify-content:center;gap:14px}
@@ -381,8 +389,6 @@ section{padding:25px 0 48px}
   border-radius:8px;color:#8da7e3;cursor:pointer
 }
 .control.play{width:39px;height:39px;background:var(--blue);border-color:var(--blue);color:white}
-.volume{margin-top:12px;display:flex;align-items:center;gap:8px;color:#52617a;font-size:8px}
-.volume input{width:100%;accent-color:var(--blue)}
 
 /* CONTACT */
 .contact{display:grid;gap:8px}
@@ -471,12 +477,12 @@ footer{text-align:center;padding:25px 0 90px;color:#39445b;font-size:7px;letter-
   <!-- HERO -->
   <section class="hero reveal" id="home">
 
-    <!-- PFP : apni image ko pfp.png naam se index.html ke saath rakho -->
+    <!-- PFP : image ko pdf.png naam se index.html ke saath rakho -->
     <div class="hero-avatar-wrap">
       <div class="hero-avatar-ring"></div>
       <div class="hero-avatar">
         <span class="avatar-fallback">DS</span>
-        <img src="pfp.png" alt="DEVSAINI" onerror="this.style.display='none'">
+        <img src="pdf.png" alt="DEVSAINI" onerror="this.style.display='none'">
       </div>
       <span class="hero-active"><i></i>ACTIVE</span>
     </div>
@@ -602,7 +608,6 @@ footer{text-align:center;padding:25px 0 90px;color:#39445b;font-size:7px;letter-
           <button class="control play" id="play">▶</button>
           <button class="control" onclick="audio.currentTime=Math.min(audio.duration||0,audio.currentTime+10)">▶|</button>
         </div>
-        <div class="volume">⌁ <input id="volume" type="range" min="0" max="1" step=".01" value=".7"></div>
       </div>
     </div>
     <!-- Put YOUR OWN / LICENSED audio beside this file and name it song.mp3 -->
@@ -661,7 +666,6 @@ footer{text-align:center;padding:25px 0 90px;color:#39445b;font-size:7px;letter-
         <small>github.com/devsainid</small>
       </a>
 
-      <!-- Replace # with your actual email/social URL -->
       <a class="card" href="#" onclick="return false">
         <div class="contact-icon">@</div>
         <b>Email</b>
@@ -711,7 +715,7 @@ enter.onclick=async()=>{
   intro.classList.add("hide");
   document.querySelector(".hero").classList.add("show");
   try{
-    audio.volume=parseFloat(volume.value)||.7;
+    audio.volume=.7;
     await audio.play();
     play.textContent="Ⅱ";
   }catch(e){/* autoplay blocked or song.mp3 missing — silent */}
@@ -731,9 +735,7 @@ const seek=document.getElementById("seekBar");
 const seekDot=document.getElementById("seekDot");
 const current=document.getElementById("current");
 const duration=document.getElementById("duration");
-const volume=document.getElementById("volume");
 
-volume.oninput=()=>audio.volume=volume.value;
 audio.volume=.7;
 
 function fmt(x){
