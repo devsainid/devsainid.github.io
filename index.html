@@ -342,27 +342,39 @@ section{padding:25px 0 48px}
 }
 .music-cover{
   height:190px;display:grid;place-items:center;text-align:center;
-  background:
-    radial-gradient(circle at 30% 35%,rgba(78,140,255,.35),transparent 22%),
-    radial-gradient(circle at 72% 65%,rgba(30,77,170,.3),transparent 30%),
-    linear-gradient(135deg,#102852,#07101e 65%);
-  position:relative
+  background:linear-gradient(135deg,#102852,#07101e 65%);
+  position:relative;overflow:hidden;
+}
+/* video fills the cover area */
+.music-cover video{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;z-index:1;display:block;
 }
 .music-cover:before,.music-cover:after{
-  content:"";position:absolute;border:1px solid rgba(101,151,255,.15);
-  border-radius:50%;width:180px;height:180px
+  content:"";position:absolute;border:1px solid rgba(101,151,255,.18);
+  border-radius:50%;width:180px;height:180px;
+  left:50%;top:50%;transform:translate(-50%,-50%);
+  z-index:2;pointer-events:none;
 }
 .music-cover:after{width:270px;height:270px}
-.cover-text{position:relative;z-index:2}
+/* dark veil so cover text stays readable over video */
+.cover-veil{
+  position:absolute;inset:0;z-index:2;
+  background:linear-gradient(180deg,rgba(3,7,15,.35) 0%,rgba(3,7,15,.6) 100%);
+  pointer-events:none;
+}
+.cover-text{position:relative;z-index:3}
 .cover-text small{font-size:7px;letter-spacing:3px;color:#7ca4ff}
-.cover-text b{display:block;font-size:28px;letter-spacing:-1.5px;margin-top:5px}
-.cover-text span{font-size:7px;color:#7892c5;letter-spacing:2px}
+.cover-text b{display:block;font-size:28px;letter-spacing:-1.5px;margin-top:5px;
+  color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.7)}
+.cover-text span{font-size:7px;color:#b8cbee;letter-spacing:2px;
+  text-shadow:0 2px 10px rgba(0,0,0,.7)}
 .player{padding:15px 16px}
 .track-row{display:flex;justify-content:space-between;font-size:7px;color:#64718a}
 
-/* SEEK BAR with 🌨️ pointer (enhanced) */
+/* SEEK BAR with 🌨️ pointer */
 .seek{
-  height:4px;background:#1a2844;margin:12px 0 18px;position:relative;
+  height:4px;background:#1a2844;margin:12px 0 4px;position:relative;
   border-radius:99px;overflow:visible;
 }
 .seek i{
@@ -382,13 +394,6 @@ section{padding:25px 0 48px}
   transition:left .2s linear;
   z-index:5;
 }
-
-.controls{display:flex;align-items:center;justify-content:center;gap:14px}
-.control{
-  width:31px;height:31px;border:1px solid #233252;background:#0b1222;
-  border-radius:8px;color:#8da7e3;cursor:pointer
-}
-.control.play{width:39px;height:39px;background:var(--blue);border-color:var(--blue);color:white}
 
 /* CONTACT */
 .contact{display:grid;gap:8px}
@@ -586,11 +591,13 @@ footer{text-align:center;padding:25px 0 90px;color:#39445b;font-size:7px;letter-
     </div>
   </section>
 
-  <!-- MUSIC PLAYER -->
+  <!-- MUSIC / VIDEO PLAYER -->
   <section class="reveal">
     <div class="section-label">— NOW PLAYING</div>
     <div class="card music">
       <div class="music-cover">
+        <video id="video" src="song.mp4" playsinline preload="metadata" loop></video>
+        <span class="cover-veil"></span>
         <div class="cover-text">
           <small>DEVSAINI PLAYER</small>
           <b>YOUR TRACK</b>
@@ -603,15 +610,9 @@ footer{text-align:center;padding:25px 0 90px;color:#39445b;font-size:7px;letter-
           <i id="seekBar"></i>
           <b class="seek-dot" id="seekDot">🌨️</b>
         </div>
-        <div class="controls">
-          <button class="control" onclick="audio.currentTime=Math.max(0,audio.currentTime-10)">|◀</button>
-          <button class="control play" id="play">▶</button>
-          <button class="control" onclick="audio.currentTime=Math.min(audio.duration||0,audio.currentTime+10)">▶|</button>
-        </div>
       </div>
     </div>
-    <!-- Put YOUR OWN / LICENSED audio beside this file and name it song.mp3 -->
-    <audio id="audio" src="song.mp3" preload="metadata"></audio>
+    <!-- Upload YOUR OWN / LICENSED song.mp4 beside index.html -->
   </section>
 
   <!-- PROJECTS -->
@@ -709,16 +710,16 @@ const loadTimer=setInterval(()=>{
   }
 },55);
 
-/* ENTER -> hide intro, show hero, autoplay song */
+/* ENTER -> hide intro, show hero, autoplay song.mp4 (video + audio) */
 enter.onclick=async()=>{
   if(enter.disabled)return;
   intro.classList.add("hide");
   document.querySelector(".hero").classList.add("show");
   try{
-    audio.volume=.7;
-    await audio.play();
-    play.textContent="Ⅱ";
-  }catch(e){/* autoplay blocked or song.mp3 missing — silent */}
+    video.muted=false;
+    video.volume=1;
+    await video.play();
+  }catch(e){/* autoplay blocked or song.mp4 missing — silent */}
 };
 
 const observer=new IntersectionObserver(entries=>{
@@ -729,38 +730,29 @@ document.querySelectorAll(".reveal").forEach(e=>observer.observe(e));
 const topBtn=document.getElementById("top");
 addEventListener("scroll",()=>topBtn.classList.toggle("show",scrollY>450));
 
-const audio=document.getElementById("audio");
-const play=document.getElementById("play");
+const video=document.getElementById("video");
 const seek=document.getElementById("seekBar");
 const seekDot=document.getElementById("seekDot");
 const current=document.getElementById("current");
 const duration=document.getElementById("duration");
 
-audio.volume=.7;
-
 function fmt(x){
   if(!isFinite(x))return"00:00";
   return String(Math.floor(x/60)).padStart(2,"0")+":"+String(Math.floor(x%60)).padStart(2,"0");
 }
-audio.onloadedmetadata=()=>duration.textContent=fmt(audio.duration);
-audio.ontimeupdate=()=>{
-  current.textContent=fmt(audio.currentTime);
-  const p=audio.duration?(audio.currentTime/audio.duration*100):0;
+video.onloadedmetadata=()=>duration.textContent=fmt(video.duration);
+video.ontimeupdate=()=>{
+  current.textContent=fmt(video.currentTime);
+  const p=video.duration?(video.currentTime/video.duration*100):0;
   seek.style.width=p+"%";
   seekDot.style.left=p+"%";
 };
-play.onclick=async()=>{
-  if(audio.paused){
-    try{await audio.play();play.textContent="Ⅱ"}
-    catch(e){alert("Add your own/licensed song.mp3 beside index.html first.")}
-  }else{audio.pause();play.textContent="▶"}
-};
-audio.onended=()=>play.textContent="▶";
 
+/* tap on seek bar -> jump */
 document.querySelector(".seek").onclick=e=>{
-  if(!audio.duration)return;
+  if(!video.duration)return;
   const r=e.currentTarget.getBoundingClientRect();
-  audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;
+  video.currentTime=((e.clientX-r.left)/r.width)*video.duration;
 };
 </script>
 </body>
