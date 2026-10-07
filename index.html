@@ -41,24 +41,109 @@ button{font:inherit}
 /* INTRO */
 #intro{
   position:fixed;inset:0;z-index:1000;display:grid;place-items:center;
-  background:#050810;transition:.65s ease;
+  background:#03070f;transition:opacity .65s ease,visibility .65s ease;
+  overflow:hidden;
+}
+#intro:before{
+  content:"";position:absolute;width:520px;height:520px;max-width:120vw;max-height:120vw;
+  left:50%;top:50%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(40,90,220,.10),transparent 65%);
+  pointer-events:none;
 }
 #intro.hide{opacity:0;visibility:hidden;pointer-events:none}
-.intro{text-align:center;width:min(320px,80vw)}
-.intro-logo{
-  font-size:22px;font-weight:900;letter-spacing:-1.5px;
+.intro{text-align:center;width:min(360px,88vw);position:relative;z-index:2}
+
+.intro-name{
+  display:flex;justify-content:center;gap:.28em;
+  font-size:clamp(34px,10.5vw,46px);font-weight:900;
+  letter-spacing:.06em;line-height:1;text-transform:uppercase;
+  white-space:nowrap;
 }
-.intro-logo span{color:var(--blue)}
-.intro-sub{font-size:8px;letter-spacing:2.3px;color:#59657d;margin-top:9px}
-.loader{height:2px;background:#18213a;margin:27px 0 13px;overflow:hidden}
-.loader i{display:block;width:0;height:100%;background:var(--blue);box-shadow:0 0 12px var(--blue);animation:load 1.55s forwards}
-@keyframes load{to{width:100%}}
+.intro-name span{
+  color:#fff;
+  text-shadow:0 0 10px rgba(255,255,255,.55),0 0 24px rgba(120,160,255,.35);
+}
+.intro-name strong{
+  color:#3f7dff;font-weight:900;
+  text-shadow:0 0 12px rgba(63,125,255,.85),0 0 30px rgba(63,125,255,.45);
+}
+
+.intro-tag{
+  margin-top:20px;font-size:12px;letter-spacing:.8px;color:#71809f;
+  position:relative;display:inline-block;
+}
+.rose{
+  display:inline-block;position:relative;margin-left:4px;
+  transform-origin:50% 90%;animation:roseReact 3.2s ease-in-out infinite;
+}
+@keyframes roseReact{
+  0%,100%{transform:rotate(0) translateY(0) scale(1)}
+  25%{transform:rotate(-9deg) translateY(-1.5px) scale(1.06)}
+  55%{transform:rotate(7deg) translateY(1px) scale(.97)}
+  80%{transform:rotate(-4deg) translateY(-1px) scale(1.03)}
+}
+.petal{
+  position:absolute;left:50%;top:55%;width:4px;height:6px;border-radius:60% 60% 60% 0;
+  background:#c0283d;opacity:0;pointer-events:none;
+  animation:petalFall 3.6s ease-in infinite;
+}
+.petal:nth-child(2){animation-delay:1.2s;left:35%;width:3px;height:5px}
+.petal:nth-child(3){animation-delay:2.3s;left:65%}
+@keyframes petalFall{
+  0%{opacity:0;transform:translate(0,0) rotate(0)}
+  15%{opacity:.85}
+  100%{opacity:0;transform:translate(10px,26px) rotate(160deg)}
+}
+.petal:nth-child(2){--dx:-8px}
+
+.intro-bar{
+  position:relative;height:5px;margin:22px auto 0;width:100%;
+  border-radius:99px;background:#121a2e;
+}
+.intro-fill{
+  height:100%;width:0;border-radius:99px;
+  background:linear-gradient(90deg,#1a4fe0,#3f7dff 60%,#9cc0ff);
+  box-shadow:0 0 14px rgba(63,125,255,.75);
+}
+.intro-dot{
+  position:absolute;top:50%;left:0;
+  transform:translate(-50%,-52%);
+  font-size:17px;line-height:1;pointer-events:none;
+  filter:drop-shadow(0 0 6px rgba(120,170,255,.9));
+  animation:dotFloat 2s ease-in-out infinite;
+}
+@keyframes dotFloat{
+  0%,100%{margin-top:0}
+  50%{margin-top:-3px}
+}
+.intro-status{
+  margin-top:16px;font-size:12px;letter-spacing:1.2px;color:#71809f;
+  display:flex;justify-content:center;gap:14px;
+}
+.intro-status b{color:#3f7dff;font-weight:700}
+
 .enter{
-  opacity:0;padding:9px 25px;border:1px solid #486db7;border-radius:30px;
-  color:#dce6ff;background:rgba(65,111,255,.04);font-size:9px;letter-spacing:2px;
-  animation:show .35s 1.55s forwards;cursor:pointer
+  position:relative;margin-top:34px;width:min(250px,70%);height:56px;
+  border:1px solid rgba(80,110,190,.45);border-radius:999px;
+  background:rgba(8,14,28,.55);color:#fff;
+  font-size:14px;letter-spacing:5px;font-weight:600;cursor:pointer;
+  box-shadow:0 0 18px rgba(50,100,255,.12);
+  transition:transform .3s ease,box-shadow .3s ease,border-color .3s ease,opacity .3s ease;
 }
-@keyframes show{to{opacity:1}}
+.enter::before,.enter::after{
+  content:"";position:absolute;inset:-3px;border-radius:999px;
+  border:2px solid transparent;pointer-events:none;
+  filter:drop-shadow(0 0 6px rgba(63,125,255,.9));
+  transition:inset .3s ease;
+}
+.enter::before{border-left-color:#3f7dff;border-top-color:rgba(63,125,255,.0)}
+.enter::after{border-right-color:#3f7dff}
+.enter:disabled{opacity:.45;cursor:not-allowed}
+.enter:not(:disabled):hover{
+  transform:translateY(-3px);border-color:rgba(100,140,255,.8);
+  box-shadow:0 0 30px rgba(63,125,255,.35);
+}
+.enter:not(:disabled):hover::before,.enter:not(:disabled):hover::after{inset:-5px}
 
 /* NAV */
 nav{
@@ -86,17 +171,107 @@ section{padding:25px 0 48px}
 .section-title{font-size:21px;letter-spacing:-.6px;margin:0}
 .rule{height:1px;background:linear-gradient(90deg,#4b79d9,transparent);margin:0 0 22px}
 
-/* HERO */
-.hero{text-align:center;padding:92px 0 42px}
-.hero-title{font-size:clamp(43px,12vw,76px);font-weight:950;letter-spacing:-4px;line-height:.9;margin:0}
-.hero-title span{color:var(--blue)}
-.hero-tag{
-  margin:13px auto 0;font-size:8px;line-height:1.8;
-  color:#68738b;letter-spacing:1.1px;text-transform:uppercase
+/* HERO (redesigned) */
+.hero{text-align:center;padding:30px 0 44px}
+
+.hero-avatar-wrap{
+  position:relative;width:172px;height:172px;
+  margin:0 auto 24px;display:grid;place-items:center;
 }
-.hero-line{width:125px;height:2px;background:var(--blue);margin:17px auto 0;box-shadow:0 0 13px rgba(76,130,255,.45)}
-.hero-year{font-size:7px;color:#3f4a60;margin-top:10px;letter-spacing:1.4px}
-.hero-actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:28px}
+.hero-avatar-ring{
+  position:absolute;inset:0;border-radius:50%;
+  border:1px dashed rgba(100,140,220,.28);
+  animation:ringSpin 24s linear infinite;pointer-events:none;
+}
+@keyframes ringSpin{to{transform:rotate(360deg)}}
+.hero-avatar{
+  width:134px;height:134px;border-radius:50%;
+  background:radial-gradient(circle at 50% 30%,#1c3568,#07101f 72%);
+  border:2px solid rgba(78,140,255,.5);
+  display:grid;place-items:center;overflow:hidden;position:relative;
+  box-shadow:0 0 34px rgba(63,125,255,.35),inset 0 0 30px rgba(63,125,255,.2);
+  z-index:1;
+}
+.hero-avatar .avatar-fallback{
+  font-size:46px;font-weight:900;letter-spacing:1px;color:#fff;
+  text-shadow:0 0 14px rgba(120,170,255,.9),0 0 32px rgba(63,125,255,.55);
+}
+.hero-avatar img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  z-index:2;display:block;
+}
+.hero-active{
+  position:absolute;bottom:6px;left:50%;transform:translateX(-50%);
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:8px;letter-spacing:1.6px;font-weight:700;color:#5ddc9c;
+  background:rgba(6,16,28,.9);border:1px solid rgba(70,200,140,.32);
+  padding:5px 11px;border-radius:99px;z-index:3;
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.hero-active i{
+  width:5px;height:5px;border-radius:50%;background:#4ce09e;
+  box-shadow:0 0 8px #4ce09e;animation:pulseDot 1.6s ease-in-out infinite;
+}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.3}}
+
+.hero-hello{
+  font-size:9px;letter-spacing:4.5px;color:#7c8db3;font-weight:600;
+  text-transform:uppercase;margin-bottom:12px;
+}
+.hero-title{
+  font-size:clamp(38px,11.5vw,62px);font-weight:950;letter-spacing:-2.5px;
+  line-height:.95;margin:0;
+}
+.hero-title span{
+  color:var(--blue);
+  text-shadow:0 0 18px rgba(76,130,255,.45);
+}
+.hero-role{
+  font-size:15px;font-weight:600;color:#5c92ff;margin-top:10px;
+  letter-spacing:.4px;
+}
+.hero-desc{
+  margin:14px auto 0;max-width:420px;
+  font-size:11px;line-height:1.75;color:#7c8aa5;letter-spacing:.2px;
+}
+.hero-line{
+  width:110px;height:2px;background:var(--blue);margin:20px auto 0;
+  box-shadow:0 0 14px rgba(76,130,255,.5);border-radius:99px;
+}
+.hero-year{
+  font-size:8px;color:#3f4a60;margin-top:11px;letter-spacing:2px;font-weight:600;
+}
+.hero-actions{
+  display:flex;flex-direction:column;gap:10px;
+  margin-top:28px;width:100%;max-width:420px;
+  margin-left:auto;margin-right:auto;
+}
+.btn-hero{
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  width:100%;padding:15px 20px;border-radius:12px;
+  font-size:13px;font-weight:600;letter-spacing:.2px;
+  border:1px solid transparent;cursor:pointer;
+  transition:transform .22s ease,background .22s ease,border-color .22s ease,box-shadow .22s ease;
+}
+.btn-hero .ic{font-size:14px;line-height:1}
+.btn-hero.primary{
+  background:#3b74ff;color:#fff;
+  box-shadow:0 10px 30px rgba(59,116,255,.32);
+}
+.btn-hero.primary:hover{
+  background:#4d82ff;transform:translateY(-2px);
+  box-shadow:0 14px 38px rgba(59,116,255,.42);
+}
+.btn-hero.ghost{
+  background:rgba(10,16,30,.55);color:#cfd9ee;
+  border-color:rgba(80,110,190,.3);
+}
+.btn-hero.ghost:hover{
+  border-color:rgba(110,150,255,.6);color:#fff;
+  background:rgba(16,24,44,.85);transform:translateY(-2px);
+}
+
+/* Legacy btn (kept, unused in hero now) */
 .btn{
   border:1px solid #263657;background:#0b1120;color:#aebde0;
   border-radius:9px;padding:10px 16px;font-size:9px;cursor:pointer
@@ -222,7 +397,20 @@ footer{text-align:center;padding:25px 0 90px;color:#39445b;font-size:7px;letter-
 
 @media(max-width:560px){
   .nav-links{display:none}.nav-menu{display:block}
-  .hero{padding-top:74px}
+  .hero{padding-top:24px}
+}
+@media(max-width:380px){
+  .intro-name{font-size:32px}
+  .intro-tag{font-size:11px}
+  .intro-status{font-size:11px}
+  .enter{height:52px;margin-top:28px}
+  .hero-avatar-wrap{width:150px;height:150px}
+  .hero-avatar{width:118px;height:118px}
+  .hero-avatar .avatar-fallback{font-size:40px}
+  .hero-title{font-size:36px;letter-spacing:-2px}
+  .hero-role{font-size:13px}
+  .hero-desc{font-size:10px}
+  .btn-hero{font-size:12px;padding:14px 18px}
 }
 @media(min-width:650px){
   .about-grid{grid-template-columns:1.45fr .55fr}
@@ -236,10 +424,20 @@ footer{text-align:center;padding:25px 0 90px;color:#39445b;font-size:7px;letter-
 <!-- LOADING / ENTER SCREEN -->
 <div id="intro">
   <div class="intro">
-    <div class="intro-logo">DEV<span>SAINI</span></div>
-    <div class="intro-sub">YOUR DIGITAL SPACE / 2026</div>
-    <div class="loader"><i></i></div>
-    <button class="enter" id="enter">ENTER</button>
+    <div class="intro-name"><span>DEV</span><strong>SAINI</strong></div>
+
+    <div class="intro-tag">Mai kuch to hu but pata nhi kya hu
+      <span class="rose">🥀<i class="petal"></i><i class="petal"></i><i class="petal"></i></span>
+    </div>
+
+    <div class="intro-bar">
+      <div class="intro-fill" id="introProgress"></div>
+      <div class="intro-dot" id="introProgressDot">🌨️</div>
+    </div>
+
+    <div class="intro-status"><span id="introStatus">Ready . .</span><b id="introPercent">0%</b></div>
+
+    <button class="enter" id="enter" disabled>ENTER</button>
   </div>
 </div>
 
@@ -258,17 +456,28 @@ footer{text-align:center;padding:25px 0 90px;color:#39445b;font-size:7px;letter-
 
   <!-- HERO -->
   <section class="hero reveal" id="home">
-    <h1 class="hero-title">DEV<span>SAINI</span></h1>
-    <div class="hero-tag">
-      AI/ML • DEVELOPMENT • BUILDING THINGS<br>
-      JUST KEEP LEARNING.
+
+    <!-- PFP : apni image ko pfp.png naam se index.html ke saath rakho -->
+    <div class="hero-avatar-wrap">
+      <div class="hero-avatar-ring"></div>
+      <div class="hero-avatar">
+        <span class="avatar-fallback">DS</span>
+        <img src="pfp.png" alt="DEVSAINI" onerror="this.style.display='none'">
+      </div>
+      <span class="hero-active"><i></i>ACTIVE</span>
     </div>
+
+    <div class="hero-hello">HELLO, I'M</div>
+    <h1 class="hero-title">DEV<span>SAINI</span></h1>
+    <div class="hero-role">Developer</div>
+    <p class="hero-desc">AI/ML • Development • Building things. Just keep learning, building, repeating.</p>
+
     <div class="hero-line"></div>
     <div class="hero-year">B.Tech / 2026 — PRESENT</div>
 
     <div class="hero-actions">
-      <a class="btn primary" href="#work">▣ &nbsp; View Projects</a>
-      <a class="btn" href="#contact">⌁ &nbsp; Connect</a>
+      <a class="btn-hero primary" href="#work"><span class="ic">▣</span> View Projects</a>
+      <a class="btn-hero ghost" href="#contact"><span class="ic">⌁</span> Connect</a>
     </div>
   </section>
 
@@ -458,11 +667,37 @@ footer{text-align:center;padding:25px 0 90px;color:#39445b;font-size:7px;letter-
 <script>
 const intro=document.getElementById("intro");
 const enter=document.getElementById("enter");
+const introProgress=document.getElementById("introProgress");
+const introProgressDot=document.getElementById("introProgressDot");
+const introPercent=document.getElementById("introPercent");
+const introStatus=document.getElementById("introStatus");
 
-setTimeout(()=>enter.disabled=false,1600);
-enter.onclick=()=>{
+enter.disabled=true;
+let loadValue=0;
+const loadTimer=setInterval(()=>{
+  loadValue+=Math.random()*2.2+.6;
+  if(loadValue>=100)loadValue=100;
+  const v=Math.floor(loadValue);
+  introProgress.style.width=loadValue+"%";
+  introProgressDot.style.left=loadValue+"%";
+  introPercent.textContent=v+"%";
+  if(loadValue>=100){
+    clearInterval(loadTimer);
+    introStatus.textContent="Ready . .";
+    enter.disabled=false;
+  }
+},55);
+
+/* ENTER -> hide intro, show hero, autoplay song */
+enter.onclick=async()=>{
+  if(enter.disabled)return;
   intro.classList.add("hide");
   document.querySelector(".hero").classList.add("show");
+  try{
+    audio.volume=parseFloat(volume.value)||.7;
+    await audio.play();
+    play.textContent="Ⅱ";
+  }catch(e){/* autoplay blocked or song.mp3 missing — silent */}
 };
 
 const observer=new IntersectionObserver(entries=>{
@@ -508,4 +743,3 @@ document.querySelector(".seek").onclick=e=>{
 </script>
 </body>
 </html>
-
