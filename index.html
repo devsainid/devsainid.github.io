@@ -320,6 +320,27 @@ section{padding:25px 0 48px}
 .about-stat small{display:block;color:#4f5b73;font-size:7px;margin-top:3px;letter-spacing:.5px}
 .quote{border-left:2px solid #435d99;padding-left:12px;margin-top:13px}
 
+/* PERSONAL INFO (inside IDENTITY card) */
+.info-list{
+  margin-top:16px;padding-top:14px;
+  border-top:1px solid rgba(80,120,200,.15);
+  display:grid;gap:11px;
+}
+.info-row{display:flex;align-items:flex-start;gap:10px;font-size:10px;line-height:1.5}
+.info-row .label{
+  color:#4e72b9;font-size:7px;letter-spacing:1.5px;font-weight:700;
+  text-transform:uppercase;min-width:74px;padding-top:2px;
+}
+.info-row .value{color:#c3cee2;flex:1;font-weight:500}
+.hobbies{display:flex;gap:5px;flex-wrap:wrap}
+.hobby-tag{
+  font-size:7px;letter-spacing:.8px;
+  color:#a8c4ff;font-weight:600;
+  background:rgba(76,130,255,.12);
+  border:1px solid rgba(76,130,255,.3);
+  border-radius:5px;padding:3px 7px;
+}
+
 /* SKILLS */
 .skills{display:grid;gap:8px}
 .skill{padding:16px}
@@ -357,7 +378,6 @@ section{padding:25px 0 48px}
   background:linear-gradient(135deg,#102852,#07101e 65%);
   position:relative;overflow:hidden;
 }
-/* video fills the cover area */
 .music-cover video{
   position:absolute;inset:0;width:100%;height:100%;
   object-fit:cover;z-index:1;display:block;
@@ -438,6 +458,7 @@ footer{text-align:center;padding:25px 0 90px;color:#39445b;font-size:7px;letter-
   .hero-desc{font-size:10px}
   .btn-hero{font-size:12px;padding:14px 18px}
   .feed-title{font-size:20px;letter-spacing:2px}
+  .info-row .label{min-width:66px}
 }
 @media(min-width:650px){
   .about-grid{grid-template-columns:1.45fr .55fr}
@@ -526,6 +547,37 @@ footer{text-align:center;padding:25px 0 90px;color:#39445b;font-size:7px;letter-
         <div class="small">IDENTITY</div>
         <p>A developer who likes to <strong>learn, experiment and build</strong> instead of only talking about ideas.</p>
         <div class="quote">Learning → Building → Breaking → Fixing → Repeat.</div>
+
+        <!-- PERSONAL INFO -->
+        <div class="info-list">
+          <div class="info-row">
+            <span class="label">Name</span>
+            <span class="value">Dev Saini</span>
+          </div>
+          <div class="info-row">
+            <span class="label">DOB</span>
+            <span class="value">01 March 2009</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Category</span>
+            <span class="value">OBC</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Education</span>
+            <span class="value">10th Passed (2024) • 12th (2026)</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Hobbies</span>
+            <span class="hobbies">
+              <span class="hobby-tag">Anime</span>
+              <span class="hobby-tag">Music</span>
+              <span class="hobby-tag">Games</span>
+              <span class="hobby-tag">Coding</span>
+              <span class="hobby-tag">Learning</span>
+            </span>
+          </div>
+        </div>
+        <!-- /PERSONAL INFO -->
       </div>
 
       <div class="card about-card">
