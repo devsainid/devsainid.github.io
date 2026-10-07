@@ -171,7 +171,7 @@ section{padding:25px 0 48px}
 .section-title{font-size:21px;letter-spacing:-.6px;margin:0}
 .rule{height:1px;background:linear-gradient(90deg,#4b79d9,transparent);margin:0 0 22px}
 
-/* HERO (redesigned) */
+/* HERO */
 .hero{text-align:center;padding:30px 0 44px}
 
 .hero-avatar-wrap{
@@ -271,7 +271,7 @@ section{padding:25px 0 48px}
   background:rgba(16,24,44,.85);transform:translateY(-2px);
 }
 
-/* Legacy btn (kept, unused in hero now) */
+/* Legacy btn */
 .btn{
   border:1px solid #263657;background:#0b1120;color:#aebde0;
   border-radius:9px;padding:10px 16px;font-size:9px;cursor:pointer
@@ -359,8 +359,22 @@ section{padding:25px 0 48px}
 .cover-text span{font-size:7px;color:#7892c5;letter-spacing:2px}
 .player{padding:15px 16px}
 .track-row{display:flex;justify-content:space-between;font-size:7px;color:#64718a}
-.seek{height:3px;background:#1a2844;margin:9px 0 14px;position:relative}
-.seek i{display:block;height:100%;width:28%;background:var(--blue)}
+
+/* SEEK BAR with 🌨️ pointer */
+.seek{
+  height:3px;background:#1a2844;margin:9px 0 14px;position:relative;
+}
+.seek i{display:block;height:100%;width:0;background:var(--blue);
+  box-shadow:0 0 8px rgba(76,130,255,.55);transition:width .2s linear}
+.seek-dot{
+  position:absolute;top:50%;left:0;
+  transform:translate(-50%,-52%);
+  font-size:12px;line-height:1;pointer-events:none;
+  filter:drop-shadow(0 0 6px rgba(120,170,255,.9));
+  animation:dotFloat 2s ease-in-out infinite;
+  transition:left .2s linear;
+}
+
 .controls{display:flex;align-items:center;justify-content:center;gap:14px}
 .control{
   width:31px;height:31px;border:1px solid #233252;background:#0b1222;
@@ -579,7 +593,10 @@ footer{text-align:center;padding:25px 0 90px;color:#39445b;font-size:7px;letter-
       </div>
       <div class="player">
         <div class="track-row"><span id="current">00:00</span><span id="duration">00:00</span></div>
-        <div class="seek"><i id="seekBar"></i></div>
+        <div class="seek">
+          <i id="seekBar"></i>
+          <b class="seek-dot" id="seekDot">🌨️</b>
+        </div>
         <div class="controls">
           <button class="control" onclick="audio.currentTime=Math.max(0,audio.currentTime-10)">|◀</button>
           <button class="control play" id="play">▶</button>
@@ -711,6 +728,7 @@ addEventListener("scroll",()=>topBtn.classList.toggle("show",scrollY>450));
 const audio=document.getElementById("audio");
 const play=document.getElementById("play");
 const seek=document.getElementById("seekBar");
+const seekDot=document.getElementById("seekDot");
 const current=document.getElementById("current");
 const duration=document.getElementById("duration");
 const volume=document.getElementById("volume");
@@ -725,7 +743,9 @@ function fmt(x){
 audio.onloadedmetadata=()=>duration.textContent=fmt(audio.duration);
 audio.ontimeupdate=()=>{
   current.textContent=fmt(audio.currentTime);
-  seek.style.width=audio.duration?(audio.currentTime/audio.duration*100)+"%":"0%";
+  const p=audio.duration?(audio.currentTime/audio.duration*100):0;
+  seek.style.width=p+"%";
+  seekDot.style.left=p+"%";
 };
 play.onclick=async()=>{
   if(audio.paused){
