@@ -558,7 +558,42 @@ footer{text-align:center;padding:25px 0 90px;color:#39445b;font-size:7px;letter-
 /* REVEAL */
 .reveal{opacity:0;transform:translateY(14px);transition:.65s ease}
 .reveal.show{opacity:1;transform:none}
+footer{
+  text-align:center;padding:25px 0 90px;
+  color:#39445b;font-size:7px;letter-spacing:2px;
+}
+.footer-copy{
+  display:inline-block;font-size:10px;font-weight:800;
+  color:#a5b8dd;letter-spacing:2.5px;
+  animation:footerGlow 2.8s ease-in-out infinite;
+}
+.footer-copy span{
+  color:#4c82ff;
+  text-shadow:0 0 14px rgba(76,130,255,1),0 0 24px rgba(76,130,255,.6);
+}
+@keyframes footerGlow{
+  0%,100%{
+    opacity:.85;
+    text-shadow:0 0 8px rgba(76,130,255,.55),0 0 18px rgba(76,130,255,.3);
+  }
+  50%{
+    opacity:1;
+    text-shadow:0 0 14px rgba(76,130,255,1),0 0 28px rgba(76,130,255,.6),0 0 46px rgba(76,130,255,.35);
+  }
+}
+.footer-sub{
+  display:block;margin-top:9px;font-size:7px;
+  letter-spacing:1.6px;color:#5a6a8a;font-weight:600;
+}
+.footer-sub i{font-style:normal;color:#4c82ff;margin:0 4px}
 
+### Part B — Footer replace karo
+
+4. `Ctrl+F` → search karo: **`BUILT FROM SCRATCH`**
+5. Ye line milegi (jo abhi hai):
+
+```html
+<footer>© 2026 DEVSAINI — ALL RIGHTS RESERVED<br><span style="opacity:.55;font-size:6px;letter-spacing:1.5px">UNAUTHORIZED COPYING OF THIS SITE'S CODE OR DESIGN IS PROHIBITED</span></footer>
 @media(max-width:560px){
   .nav-links{display:none}.nav-menu{display:block}
   .hero{padding-top:24px}
@@ -667,7 +702,7 @@ footer{text-align:center;padding:25px 0 90px;color:#39445b;font-size:7px;letter-
   <!-- ABOUT -->
   <section id="about" class="reveal">
     <div class="section-label">— ABOUT</div>
-    <h2 class="section-title">Who is DEVSAINI?</h2>
+    <h2 class="section-title">Who is DEV SAINI?</h2>
     <div class="rule"></div>
 
     <div class="about-grid">
@@ -1036,8 +1071,8 @@ footer{text-align:center;padding:25px 0 90px;color:#39445b;font-size:7px;letter-
   </section>
 
 <footer>
-  © 2026 DEVSAINI — ALL RIGHTS RESERVED<br>
-  <span style="opacity:.55;font-size:6px;letter-spacing:1.5px">UNAUTHORIZED COPYING OF THIS SITE'S CODE OR DESIGN IS PROHIBITED</span>
+  <div class="footer-copy">© 2026 <span>DEVSAINI</span> — ALL RIGHTS RESERVED</div>
+  <div class="footer-sub"><i>⚡</i>UNAUTHORIZED COPYING OF THIS SITE'S CODE OR DESIGN IS PROHIBITED<i>⚡</i></div>
 </footer>
 </main>
 
