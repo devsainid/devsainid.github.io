@@ -33,42 +33,63 @@ button{font:inherit}
 .container{width:min(100% - 28px,720px);margin:auto;position:relative;z-index:10;}
 
 /* ========================================= */
-/* ANIME 3D PARALLAX BACKGROUND              */
+/* REAL ANIME 2D BACKGROUND & STARS          */
 /* ========================================= */
 .anime-bg {
   position: fixed; inset: 0; z-index: -5; pointer-events: none; overflow: hidden;
   background: linear-gradient(180deg, #02040a 0%, #0a1128 50%, #150c1c 100%);
 }
 
-/* 3D ANIME MOON */
+/* ITACHI STYLE DARK RED 2D MOON */
 .anime-moon {
-  position: absolute; top: 12%; right: 10%;
+  position: absolute; top: 15%; right: 15%;
   width: 280px; height: 280px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #ffb3b3 0%, #ff4d4d 30%, #990000 70%, #1a0000 100%);
+  /* Solid flat anime red with subtle inner shading, NO 3D blur */
+  background: #8b0000; 
+  background: radial-gradient(circle at 50% 50%, #a30000 0%, #7a0000 70%, #4a0000 100%);
   box-shadow: 
-    0 0 60px rgba(255, 70, 70, 0.4),
-    0 0 120px rgba(255, 70, 70, 0.2),
-    0 0 200px rgba(255, 70, 70, 0.1),
-    inset -15px -15px 50px rgba(0,0,0,0.9),
-    inset 10px 10px 40px rgba(255, 200, 200, 0.5);
+    0 0 60px rgba(255, 0, 0, 0.2),
+    0 0 120px rgba(255, 0, 0, 0.1);
   will-change: transform;
   animation: moonFloat 8s ease-in-out infinite alternate;
 }
-/* Moon Craters */
+/* Anime style moon texture (flat craters) */
 .anime-moon::before {
   content:""; position: absolute; inset: 0; border-radius: 50%;
   background: 
-    radial-gradient(circle at 25% 65%, rgba(0,0,0,0.6) 5%, transparent 15%),
-    radial-gradient(circle at 65% 25%, rgba(0,0,0,0.5) 8%, transparent 20%),
-    radial-gradient(circle at 50% 80%, rgba(0,0,0,0.4) 4%, transparent 12%),
-    radial-gradient(circle at 80% 60%, rgba(0,0,0,0.3) 6%, transparent 18%);
-  filter: blur(2px);
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    radial-gradient(circle at 30% 60%, rgba(0,0,0,0.4) 8%, transparent 10%),
+    radial-gradient(circle at 70% 25%, rgba(0,0,0,0.3) 6%, transparent 8%),
+    radial-gradient(circle at 60% 75%, rgba(0,0,0,0.5) 10%, transparent 12%),
+    radial-gradient(circle at 20% 20%, rgba(0,0,0,0.2) 5%, transparent 7%);
 }
 @keyframes moonFloat {
-  0% { transform: translateY(0) rotate(0deg); }
-  100% { transform: translateY(20px) rotate(4deg); }
+  0% { transform: translateY(0); }
+  100% { transform: translateY(15px); }
+}
+
+/* STARS / PARTICLES MOVING */
+.anime-particles { position: absolute; inset: 0; overflow: hidden; }
+.anime-particles span {
+  position: absolute; width: 4px; height: 4px; border-radius: 50%;
+  background: #fff; box-shadow: 0 0 8px #fff, 0 0 15px rgba(255,255,255,0.5);
+  opacity: 0; 
+  animation: starMove 10s linear infinite;
+}
+/* Different positions and speeds for stars */
+.anime-particles span:nth-child(1) { left: 10%; top: 80%; animation-duration: 12s; animation-delay: 0s; }
+.anime-particles span:nth-child(2) { left: 30%; top: 60%; animation-duration: 15s; animation-delay: 2s; background: #ff6b6b; box-shadow: 0 0 8px #ff6b6b; }
+.anime-particles span:nth-child(3) { left: 60%; top: 90%; animation-duration: 10s; animation-delay: 4s; }
+.anime-particles span:nth-child(4) { left: 80%; top: 40%; animation-duration: 18s; animation-delay: 1s; background: #4c82ff; box-shadow: 0 0 8px #4c82ff; }
+.anime-particles span:nth-child(5) { left: 50%; top: 30%; animation-duration: 14s; animation-delay: 5s; }
+.anime-particles span:nth-child(6) { left: 90%; top: 70%; animation-duration: 11s; animation-delay: 3s; }
+.anime-particles span:nth-child(7) { left: 20%; top: 20%; animation-duration: 16s; animation-delay: 7s; background: #b975f7; box-shadow: 0 0 8px #b975f7; }
+
+@keyframes starMove {
+  0% { transform: translateY(0) scale(0.5); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(-200px) scale(1.2); opacity: 0; }
 }
 
 /* LAYERED MOUNTAINS */
@@ -91,28 +112,6 @@ button{font:inherit}
 @keyframes mistDrift {
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
-}
-
-/* MOVING FIREFLIES / PARTICLES */
-.anime-particles { position: absolute; inset: 0; overflow: hidden; }
-.anime-particles span {
-  position: absolute; width: 5px; height: 5px; border-radius: 50%;
-  background: #ffbaba; box-shadow: 0 0 10px #ff6b6b, 0 0 20px #d93838;
-  opacity: 0; animation: floatFirefly 12s linear infinite;
-}
-.anime-particles span:nth-child(1) { left: 20%; bottom: 10%; animation-delay: 0s; }
-.anime-particles span:nth-child(2) { left: 80%; bottom: 20%; animation-delay: 3s; background: #76a0ff; box-shadow: 0 0 10px #4c82ff; }
-.anime-particles span:nth-child(3) { left: 50%; bottom: 5%; animation-delay: 6s; }
-.anime-particles span:nth-child(4) { left: 10%; bottom: 30%; animation-delay: 9s; background: #b975f7; box-shadow: 0 0 10px #a855f7; }
-.anime-particles span:nth-child(5) { left: 90%; bottom: 40%; animation-delay: 2s; }
-.anime-particles span:nth-child(6) { left: 40%; bottom: 15%; animation-delay: 7s; background: #22d3ee; box-shadow: 0 0 10px #22d3ee; }
-.anime-particles span:nth-child(7) { left: 60%; bottom: 30%; animation-delay: 4s; }
-
-@keyframes floatFirefly {
-  0% { transform: translate3d(0, 0, 0) scale(1); opacity: 0; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { transform: translate3d(-30px, -150px, 0) scale(1.5); opacity: 0; }
 }
 
 /* OVERLAY FOR TEXT READABILITY */
@@ -845,6 +844,7 @@ footer{text-align:center;padding:40px 0 100px;display:flex;flex-direction:column
 <div class="anime-bg">
   <div class="anime-moon" id="animeMoon"></div>
   <div class="anime-particles">
+    <!-- STARS MOVING -->
     <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
   </div>
   <div class="anime-mountains" id="animeMountains">
