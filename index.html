@@ -32,106 +32,20 @@ button{font:inherit}
 .container{width:min(100% - 28px,720px);margin:auto;position:relative;z-index:10;}
 
 /* ========================================= */
-/* SOLAR SYSTEM BACKGROUND (KAGE STYLE)      */
+/* PREMIUM 3D WEBGL BACKGROUND               */
 /* ========================================= */
-.solar-bg {
-  position: fixed; inset: 0; z-index: -5; pointer-events: none; overflow: hidden;
-  background: radial-gradient(circle at 10% 50%, #0a1128 0%, #02040a 70%);
+#webgl-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: -2;
+  pointer-events: none; /* Let clicks pass through to UI */
 }
 
-/* The horizontal track that moves on scroll */
-.solar-track {
-  position: absolute; top: 50%; left: 0;
-  height: 100vh;
-  display: flex; align-items: center;
-  gap: 15vw; /* Space between planets */
-  padding-left: 20vw; /* Start padding so sun is visible */
-  transform: translateY(-50%);
-  will-change: transform;
-  transition: transform 0.1s ease-out; /* Smooth out the scroll */
-}
-
-/* Base Planet Style */
-.planet {
-  border-radius: 50%;
-  position: relative;
-  box-shadow: inset -20px -20px 50px rgba(0,0,0,0.8);
-  flex-shrink: 0;
-}
-
-/* THE SUN */
-.sun {
-  width: 400px; height: 400px;
-  background: radial-gradient(circle at 30% 30%, #fff5a1, #ffaa00 40%, #ff4500 80%, #8b0000);
-  box-shadow: 
-    0 0 100px rgba(255, 165, 0, 0.6),
-    0 0 200px rgba(255, 69, 0, 0.3),
-    inset -20px -20px 50px rgba(139,0,0,0.8);
-  animation: sunPulse 4s infinite alternate;
-}
-@keyframes sunPulse {
-  0% { box-shadow: 0 0 80px rgba(255, 165, 0, 0.5), 0 0 180px rgba(255, 69, 0, 0.2), inset -20px -20px 50px rgba(139,0,0,0.8); }
-  100% { box-shadow: 0 0 120px rgba(255, 165, 0, 0.8), 0 0 250px rgba(255, 69, 0, 0.4), inset -20px -20px 50px rgba(139,0,0,0.8); }
-}
-
-/* MERCURY */
-.mercury { width: 80px; height: 80px; background: #8c8c8c; background-image: radial-gradient(circle at 20% 20%, #b0b0b0 10%, transparent 20%), radial-gradient(circle at 70% 60%, #666 15%, transparent 25%); }
-
-/* VENUS */
-.venus { width: 130px; height: 130px; background: #e6cca0; background-image: radial-gradient(circle at 30% 70%, #cca878 20%, transparent 40%); }
-
-/* EARTH */
-.earth { width: 150px; height: 150px; background: #2b65ff; background-image: radial-gradient(circle at 40% 30%, #4caf50 10%, transparent 20%), radial-gradient(circle at 70% 60%, #4caf50 15%, transparent 30%); border: 2px solid rgba(255,255,255,0.2); }
-
-/* MARS */
-.mars { width: 100px; height: 100px; background: #c1440e; background-image: radial-gradient(circle at 50% 50%, #e05a1a 20%, transparent 40%); }
-
-/* JUPITER */
-.jupiter { width: 280px; height: 280px; background: #d8ca9d; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(139, 69, 19, 0.2) 10px, rgba(139, 69, 19, 0.2) 20px); }
-
-/* SATURN */
-.saturn {
-  width: 240px; height: 240px; background: #e3d5a1;
-  background-image: repeating-linear-gradient(0deg, transparent, transparent 15px, rgba(180, 160, 100, 0.3) 15px, rgba(180, 160, 100, 0.3) 30px);
-}
-.saturn::after {
-  content: ''; position: absolute; top: 50%; left: 50%;
-  width: 380px; height: 80px; border-radius: 50%;
-  border: 15px solid rgba(255, 255, 255, 0.2);
-  transform: translate(-50%, -50%) rotate(-20deg);
-  box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-}
-
-/* URANUS */
-.uranus { width: 180px; height: 180px; background: #4fd1c5; box-shadow: inset -10px -10px 30px rgba(0,0,0,0.5); }
-
-/* NEPTUNE */
-.neptune { width: 170px; height: 170px; background: #2b6cb0; box-shadow: inset -10px -10px 30px rgba(0,0,0,0.5); }
-
-/* Fixed Stars Background */
-.stars-overlay {
-  position: absolute; inset: 0;
-  background-image: 
-    radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
-    radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
-    radial-gradient(1px 1px at 160px 120px, #fff, rgba(0,0,0,0));
-  background-repeat: repeat;
-  background-size: 200px 200px;
-  opacity: 0.3;
-  animation: starDrift 60s linear infinite;
-}
-@keyframes starDrift {
-  0% { background-position: 0 0; }
-  100% { background-position: -200px 0; }
-}
-
-/* Dark Overlay to make text readable */
+/* Dark overlay to keep text readable */
 .bg-overlay {
-  position: fixed; inset: 0; z-index: -4; pointer-events: none;
-  background: linear-gradient(to right, rgba(2,4,10,0.9) 0%, rgba(2,4,10,0.4) 50%, rgba(2,4,10,0.8) 100%);
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(2,4,10,0.85) 100%);
 }
 
 /* CLICK TAP EFFECT (BURST) */
@@ -829,12 +743,6 @@ footer{text-align:center;padding:40px 0 100px;display:flex;flex-direction:column
 @media(max-width:560px){
   .nav-links{display:none}.nav-menu{display:block}
   .hero{padding-top:100px;padding-bottom:120px}
-  .solar-track { gap: 80vw; padding-left: 10vw; } /* Adjust for mobile spacing */
-  .sun { width: 250px; height: 250px; }
-  .jupiter, .saturn { width: 180px; height: 180px; }
-  .saturn::after { width: 280px; height: 60px; border-width: 10px; }
-  .earth, .uranus, .neptune { width: 100px; height: 100px; }
-  .venus, .mars, .mercury { width: 70px; height: 70px; }
 }
 @media(max-width:380px){
   .intro-name{font-size:32px}
@@ -876,22 +784,8 @@ footer{text-align:center;padding:40px 0 100px;display:flex;flex-direction:column
 
 <body>
 
-<!-- SOLAR SYSTEM BACKGROUND -->
-<div class="solar-bg">
-  <div class="stars-overlay"></div>
-  <div class="solar-track" id="solarTrack">
-    <!-- Sun to Neptune -->
-    <div class="planet sun"></div>
-    <div class="planet mercury"></div>
-    <div class="planet venus"></div>
-    <div class="planet earth"></div>
-    <div class="planet mars"></div>
-    <div class="planet jupiter"></div>
-    <div class="planet saturn"></div>
-    <div class="planet uranus"></div>
-    <div class="planet neptune"></div>
-  </div>
-</div>
+<!-- PREMIUM 3D BACKGROUND CANVAS -->
+<canvas id="webgl-bg"></canvas>
 <!-- Dark overlay for readability -->
 <div class="bg-overlay"></div>
 
@@ -1349,7 +1243,173 @@ footer{text-align:center;padding:40px 0 100px;display:flex;flex-direction:column
 
 <button id="top" onclick="scrollTo({top:0,behavior:'smooth'})">↑</button>
 
-<script>
+<!-- THREE.JS FOR PREMIUM 3D BACKGROUND -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+
+/* --- BASIC SETUP --- */
+const canvas = document.getElementById('webgl-bg');
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+const scene = new THREE.Scene();
+const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+/* --- LIQUID AURORA SHADER BACKGROUND --- */
+const uniforms = {
+  uTime: { value: 0 },
+  uMouse: { value: new THREE.Vector2(0.5, 0.5) },
+  uResolution: { value: new THREE.Vector2(window.innerWidth, window.innerHeight) }
+};
+
+const vertexShader = `
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = vec4(position, 1.0);
+  }
+`;
+
+const fragmentShader = `
+  uniform float uTime;
+  uniform vec2 uMouse;
+  uniform vec2 uResolution;
+  varying vec2 vUv;
+
+  void main() {
+    vec2 uv = vUv;
+    
+    // Create fluid waves
+    float wave1 = sin(uv.x * 3.0 + uTime * 0.5) * cos(uv.y * 2.0 - uTime * 0.3);
+    float wave2 = sin(uv.y * 4.0 - uTime * 0.4) * cos(uv.x * 3.0 + uTime * 0.6);
+    
+    // Mouse influence
+    float dist = length(uv - uMouse);
+    float mouseEffect = smoothstep(0.3, 0.0, dist);
+    
+    float pattern = wave1 * 0.5 + wave2 * 0.5 + mouseEffect * 0.5;
+    
+    // Premium Color Palette
+    vec3 color1 = vec3(0.01, 0.02, 0.05); // Deep Space
+    vec3 color2 = vec3(0.05, 0.1, 0.3);   // Deep Blue
+    vec3 color3 = vec3(0.2, 0.05, 0.4);   // Purple
+    vec3 color4 = vec3(0.0, 0.4, 0.6);    // Cyan
+    
+    vec3 finalColor = mix(color1, color2, smoothstep(-0.8, 0.8, pattern));
+    finalColor = mix(finalColor, color3, smoothstep(0.0, 0.6, wave1));
+    finalColor = mix(finalColor, color4, smoothstep(0.2, 1.0, wave2));
+    
+    // Add a glowing hotspot
+    finalColor += color4 * mouseEffect * 0.3;
+    
+    gl_FragColor = vec4(finalColor, 1.0);
+  }
+`;
+
+const material = new THREE.ShaderMaterial({
+  vertexShader,
+  fragmentShader,
+  uniforms,
+  depthWrite: false
+});
+
+const plane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2), material);
+scene.add(plane);
+
+/* --- FLOATING PARTICLES (For 3D depth) --- */
+const particleCount = 1000;
+const particlesGeo = new THREE.BufferGeometry();
+const positions = new Float32Array(particleCount * 3);
+
+for(let i=0; i<particleCount * 3; i+=3) {
+  positions[i] = (Math.random() - 0.5) * 10;   // x
+  positions[i+1] = (Math.random() - 0.5) * 10; // y
+  positions[i+2] = Math.random() * 5;          // z
+}
+
+particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+const particlesMat = new THREE.PointsMaterial({
+  color: 0x76a0ff,
+  size: 0.02,
+  transparent: true,
+  opacity: 0.6,
+  blending: THREE.AdditiveBlending
+});
+
+const particles = new THREE.Points(particlesGeo, particlesMat);
+scene.add(particles);
+
+// Particle Camera (Perspective for depth)
+const particleCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+particleCamera.position.z = 3;
+
+/* --- ANIMATION LOOP --- */
+const clock = new THREE.Clock();
+
+function animate() {
+  const elapsedTime = clock.getElapsedTime();
+  
+  // Update Shader Time
+  uniforms.uTime.value = elapsedTime;
+  
+  // Slowly rotate particles for 3D effect
+  particles.rotation.y = elapsedTime * 0.05;
+  particles.rotation.x = elapsedTime * 0.02;
+  
+  // Render
+  renderer.render(scene, particleCamera);
+  requestAnimationFrame(animate);
+}
+
+animate();
+
+/* --- RESIZE HANDLER --- */
+window.addEventListener('resize', () => {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
+  particleCamera.aspect = window.innerWidth / window.innerHeight;
+  particleCamera.updateProjectionMatrix();
+});
+
+/* --- MOUSE TRACKING FOR SHADER --- */
+let targetMouse = new THREE.Vector2(0.5, 0.5);
+let currentMouse = new THREE.Vector2(0.5, 0.5);
+
+window.addEventListener('mousemove', (e) => {
+  targetMouse.x = e.clientX / window.innerWidth;
+  targetMouse.y = 1.0 - (e.clientY / window.innerHeight);
+});
+
+window.addEventListener('touchmove', (e) => {
+  const t = e.touches[0];
+  if(t) {
+    targetMouse.x = t.clientX / window.innerWidth;
+    targetMouse.y = 1.0 - (t.clientY / window.innerHeight);
+  }
+}, { passive: true });
+
+// Smooth mouse update inside the loop (lerp)
+function updateMouse() {
+  currentMouse.lerp(targetMouse, 0.05);
+  uniforms.uMouse.value.copy(currentMouse);
+  requestAnimationFrame(updateMouse);
+}
+updateMouse();
+
+/* ========================================= */
+/* UI & INTERACTION LOGIC (From previous)    */
+/* ========================================= */
+
 const intro=document.getElementById("intro");
 const enter=document.getElementById("enter");
 const introProgress=document.getElementById("introProgress");
@@ -1395,75 +1455,24 @@ const observer=new IntersectionObserver(entries=>{
 
 document.querySelectorAll(".reveal-up, .reveal-left, .reveal-right, .reveal-zoom").forEach(e=>observer.observe(e));
 
-/* --- SCROLL PROGRESS BAR & SOLAR SYSTEM PARALLAX --- */
+/* --- SCROLL PROGRESS BAR --- */
 const progressBar = document.getElementById("scroll-progress");
-const solarTrack = document.getElementById("solarTrack");
 
-// Function to handle both scroll progress and horizontal background movement
-function handleScroll() {
+window.addEventListener("scroll", () => {
   const scrollTop = window.scrollY;
   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-  
-  // 1. Update Progress Bar
   const scrolled = (docHeight > 0) ? (scrollTop / docHeight) * 100 : 0;
   progressBar.style.width = scrolled + "%";
-
-  // 2. Move Solar System Right to Left (Scroll Down)
-  // The multiplier (0.8) controls how fast it moves. Adjust if needed.
-  if (solarTrack) {
-    solarTrack.style.transform = `translateY(-50%) translateX(${-scrollTop * 0.8}px)`;
-  }
-}
-
-window.addEventListener("scroll", handleScroll);
-// Initialize on load
-handleScroll();
-
-/* --- CINEMATIC MOUSE PARALLAX (KAGE STYLE) --- */
-const heroParallax = document.getElementById("heroParallax");
-const heroBgGlow = document.getElementById("heroBgGlow");
-const heroTitle = document.querySelector(".hero-title");
-const heroAvatarWrap = document.querySelector(".hero-avatar-wrap");
-
-function applyHeroParallax(x, y) {
-  if (heroParallax) heroParallax.style.transform = `translate3d(${x * 15}px, ${y * 15}px, 0)`;
-  if (heroBgGlow) heroBgGlow.style.transform = `translate(-50%, -50%) translate3d(${-x * 30}px, ${-y * 30}px, 0)`;
-  if (heroTitle) heroTitle.style.transform = `translate3d(${-x * 6}px, ${-y * 6}px, 0)`;
-  if (heroAvatarWrap) heroAvatarWrap.style.transform = `translate3d(${x * 8}px, ${y * 8}px, 0)`;
-}
-
-document.addEventListener("mousemove", (e) => {
-  const x = (e.clientX / window.innerWidth - 0.5) * 2;
-  const y = (e.clientY / window.innerHeight - 0.5) * 2;
-  applyHeroParallax(x, y);
 });
-
-document.addEventListener("touchmove", (e) => {
-  const t = e.touches[0];
-  if(!t) return;
-  const x = (t.clientX / window.innerWidth - 0.5) * 2;
-  const y = (t.clientY / window.innerHeight - 0.5) * 2;
-  applyHeroParallax(x, y);
-}, { passive: true });
-
-document.addEventListener("mouseleave", () => applyHeroParallax(0, 0));
 
 /* --- CLICK / TAP BURST EFFECT --- */
 window.addEventListener('pointerdown', (e) => {
-  // Create the burst element
   const burst = document.createElement('div');
   burst.className = 'click-burst';
-  
-  // Position it exactly where the user clicked/tapped
   burst.style.left = e.clientX + 'px';
   burst.style.top = e.clientY + 'px';
-  
   document.body.appendChild(burst);
-  
-  // Remove it after the animation finishes (0.6s)
-  setTimeout(() => {
-    burst.remove();
-  }, 600);
+  setTimeout(() => burst.remove(), 600);
 });
 
 /* --- BACK TO TOP --- */
