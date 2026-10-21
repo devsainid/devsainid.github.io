@@ -31,7 +31,6 @@ body:before{
     linear-gradient(90deg,rgba(91,130,255,.035) 1px,transparent 1px);
   background-size:auto,auto,auto,46px 46px,46px 46px;
 }
-/* PARALLAX GLOW */
 body:after{
   content:"";position:fixed;width:60vw;height:60vw;max-width:700px;max-height:700px;
   left:50%;top:38%;transform:translate(-50%,-50%);
@@ -201,8 +200,73 @@ section{padding:25px 0 48px}
   text-shadow:0 0 20px rgba(76,130,255,.75),0 0 46px rgba(76,130,255,.35);
 }
 
-/* HERO */
-.hero{text-align:center;padding:30px 0 44px}
+/* ===== CINEMATIC HERO (KAGE STYLE) ===== */
+.hero{
+  position:relative;
+  text-align:center;
+  padding:60px 0 120px;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
+
+/* Cinematic background glow layer */
+.hero-bg-glow{
+  position:absolute;
+  left:50%;top:50%;
+  width:90vw;height:90vw;
+  max-width:900px;max-height:900px;
+  transform:translate(-50%,-50%);
+  background:
+    radial-gradient(circle, rgba(76,130,255,.18) 0%, transparent 55%),
+    radial-gradient(circle at 30% 70%, rgba(139,92,246,.12) 0%, transparent 50%),
+    radial-gradient(circle at 70% 30%, rgba(34,211,238,.10) 0%, transparent 50%);
+  filter:blur(50px);
+  pointer-events:none;
+  z-index:0;
+  transition:transform .4s cubic-bezier(0.2,0.8,0.2,1);
+  will-change:transform;
+}
+
+/* Floating particles */
+.hero-particles{
+  position:absolute;inset:0;
+  pointer-events:none;z-index:1;overflow:hidden;
+}
+.hero-particles span{
+  position:absolute;
+  width:3px;height:3px;
+  border-radius:50%;
+  background:#76a0ff;
+  box-shadow:0 0 10px rgba(120,170,255,.9),0 0 20px rgba(76,130,255,.5);
+  animation:particleFloat 12s linear infinite;
+  opacity:.5;
+}
+.hero-particles span:nth-child(1){left:8%;top:20%;animation-delay:0s}
+.hero-particles span:nth-child(2){left:22%;top:70%;animation-delay:-2s;background:#c084fc}
+.hero-particles span:nth-child(3){left:45%;top:15%;animation-delay:-4s}
+.hero-particles span:nth-child(4){left:68%;top:60%;animation-delay:-6s;background:#22d3ee}
+.hero-particles span:nth-child(5){left:85%;top:30%;animation-delay:-8s}
+.hero-particles span:nth-child(6){left:55%;top:85%;animation-delay:-10s;background:#c084fc}
+
+@keyframes particleFloat{
+  0%{transform:translate(0,0) scale(1);opacity:.3}
+  50%{transform:translate(30px,-60px) scale(1.6);opacity:.9}
+  100%{transform:translate(-20px,-120px) scale(.8);opacity:0}
+}
+
+/* Parallax wrapper — whole content moves slightly with mouse */
+.hero-parallax{
+  position:relative;
+  z-index:2;
+  transition:transform .4s cubic-bezier(0.2,0.8,0.2,1);
+  will-change:transform;
+  width:100%;
+}
+
 .hero-avatar-wrap{
   position:relative;width:180px;height:180px;
   margin:0 auto 26px;display:grid;place-items:center;
@@ -313,34 +377,35 @@ section{padding:25px 0 48px}
 }
 
 .hero-hello{
-  font-size:9px;letter-spacing:4.5px;color:#8fa5cc;font-weight:600;
-  text-transform:uppercase;margin-bottom:12px;
+  font-size:10px;letter-spacing:5px;color:#8fa5cc;font-weight:600;
+  text-transform:uppercase;margin-bottom:14px;
   text-shadow:0 0 10px rgba(120,160,255,.3);
 }
 .hero-title{
-  font-size:clamp(38px,11.5vw,62px);font-weight:950;letter-spacing:-2.5px;
-  line-height:.95;margin:0;
+  font-size:clamp(48px,14vw,96px);font-weight:950;letter-spacing:-3px;
+  line-height:.9;margin:0;
+  text-transform:uppercase;
 }
 .hero-title span{
   color:var(--blue);
   text-shadow:0 0 22px rgba(76,130,255,.75),0 0 46px rgba(76,130,255,.35);
 }
 .hero-role{
-  font-size:15px;font-weight:600;color:#5c92ff;margin-top:10px;
-  letter-spacing:.4px;
+  font-size:15px;font-weight:600;color:#5c92ff;margin-top:14px;
+  letter-spacing:3px;text-transform:uppercase;
   text-shadow:0 0 16px rgba(92,146,255,.5);
 }
 .hero-desc{
-  margin:14px auto 0;max-width:420px;
+  margin:20px auto 0;max-width:420px;
   font-size:11px;line-height:1.75;color:#8b99b5;letter-spacing:.2px;
 }
 .hero-line{
-  width:110px;height:2px;background:var(--blue);margin:20px auto 0;
+  width:110px;height:2px;background:var(--blue);margin:26px auto 0;
   box-shadow:0 0 18px rgba(76,130,255,.75);border-radius:99px;
 }
 .hero-year{font-size:8px;color:#4a5878;margin-top:11px;letter-spacing:2px;font-weight:600}
 .hero-actions{
-  display:flex;flex-direction:column;gap:10px;margin-top:28px;
+  display:flex;flex-direction:column;gap:10px;margin-top:32px;
   width:100%;max-width:420px;margin-left:auto;margin-right:auto;
 }
 .btn-hero{
@@ -371,6 +436,32 @@ section{padding:25px 0 48px}
   box-shadow:0 0 22px rgba(76,130,255,.35);
 }
 
+/* Chapter indicators like Kage */
+.hero-chapters{
+  position:absolute;
+  bottom:32px;left:50%;
+  transform:translateX(-50%);
+  display:flex;gap:24px;
+  font-size:11px;font-weight:700;
+  letter-spacing:3px;
+  color:#3f5573;
+  z-index:3;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.hero-chapters span{
+  position:relative;
+  transition:color .3s ease;
+}
+.hero-chapters span.active{
+  color:#76a0ff;
+  text-shadow:0 0 12px rgba(120,170,255,.9),0 0 24px rgba(76,130,255,.5);
+}
+.hero-chapters span.active::after{
+  content:"";position:absolute;bottom:-8px;left:0;right:0;
+  height:1px;background:#4c82ff;
+  box-shadow:0 0 8px #4c82ff;
+}
+
 /* STATS */
 .stats{
   display:grid;grid-template-columns:repeat(3,1fr);
@@ -382,10 +473,7 @@ section{padding:25px 0 48px}
 }
 .stat{text-align:center;padding:17px 4px;border-right:1px solid rgba(76,130,255,.15)}
 .stat:last-child{border:0}
-.stat b{
-  font-size:19px;font-weight:850;
-  text-shadow:0 0 14px rgba(120,160,255,.35);
-}
+.stat b{font-size:19px;font-weight:850;text-shadow:0 0 14px rgba(120,160,255,.35)}
 .stat span{display:block;color:#5a6688;font-size:7px;letter-spacing:1.2px;margin-top:5px}
 
 /* CARDS */
@@ -476,7 +564,6 @@ section{padding:25px 0 48px}
   color:#aab6cc;font-size:10px;font-weight:500;
   display:inline-flex;align-items:center;gap:9px;
 }
-
 .mark-sub .sub-emoji{
   font-size:14px;line-height:1;
   display:inline-block;
@@ -502,7 +589,6 @@ section{padding:25px 0 48px}
     drop-shadow(0 0 12px rgba(120,170,255,1))
     drop-shadow(0 0 24px rgba(76,130,255,.9));
 }
-
 .mark-row:nth-child(1) .sub-emoji{animation-delay:0s}
 .mark-row:nth-child(2) .sub-emoji{animation-delay:.35s}
 .mark-row:nth-child(3) .sub-emoji{animation-delay:.7s}
@@ -735,23 +821,16 @@ footer{
 }
 @keyframes footerGlow{
   0%,100%{
-    box-shadow:
-      0 0 22px rgba(76,130,255,.25),
-      0 0 45px rgba(76,130,255,.12),
-      inset 0 0 18px rgba(76,130,255,.06);
+    box-shadow:0 0 22px rgba(76,130,255,.25),0 0 45px rgba(76,130,255,.12),inset 0 0 18px rgba(76,130,255,.06);
     border-color:rgba(76,130,255,.3);
   }
   50%{
-    box-shadow:
-      0 0 36px rgba(76,130,255,.55),
-      0 0 70px rgba(76,130,255,.3),
-      inset 0 0 26px rgba(76,130,255,.14);
+    box-shadow:0 0 36px rgba(76,130,255,.55),0 0 70px rgba(76,130,255,.3),inset 0 0 26px rgba(76,130,255,.14);
     border-color:rgba(76,130,255,.65);
   }
 }
 .footer-copy{
-  font-size:11px;font-weight:800;
-  color:#cdd8ee;letter-spacing:2.4px;
+  font-size:11px;font-weight:800;color:#cdd8ee;letter-spacing:2.4px;
   display:inline-flex;align-items:center;gap:8px;
   animation:footerFloat 2.8s ease-in-out infinite;
 }
@@ -761,17 +840,12 @@ footer{
 }
 .footer-copy b{
   color:var(--blue);font-weight:900;letter-spacing:2.8px;
-  text-shadow:
-    0 0 12px rgba(76,130,255,1),
-    0 0 26px rgba(76,130,255,.7),
-    0 0 42px rgba(76,130,255,.4);
+  text-shadow:0 0 12px rgba(76,130,255,1),0 0 26px rgba(76,130,255,.7),0 0 42px rgba(76,130,255,.4);
 }
 .footer-sub{
-  margin-top:9px;
-  font-size:7px;letter-spacing:1.6px;
+  margin-top:9px;font-size:7px;letter-spacing:1.6px;
   color:#6b7a9c;font-weight:600;
-  animation:footerFloat 2.8s ease-in-out infinite;
-  animation-delay:.4s;
+  animation:footerFloat 2.8s ease-in-out infinite;animation-delay:.4s;
 }
 
 /* BACK TOP */
@@ -783,20 +857,18 @@ footer{
 }
 #top.show{opacity:1;pointer-events:auto}
 
-/* ADVANCED REVEAL ANIMATIONS */
+/* REVEAL ANIMATIONS */
 .reveal-up{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(0.2,0.8,0.2,1)}
 .reveal-left{opacity:0;transform:translateX(-40px);transition:all .8s cubic-bezier(0.2,0.8,0.2,1)}
 .reveal-right{opacity:0;transform:translateX(40px);transition:all .8s cubic-bezier(0.2,0.8,0.2,1)}
 .reveal-zoom{opacity:0;transform:scale(0.92);transition:all .8s cubic-bezier(0.2,0.8,0.2,1)}
-
 .reveal-up.show, .reveal-left.show, .reveal-right.show, .reveal-zoom.show{
-  opacity:1;
-  transform:translate(0) scale(1);
+  opacity:1;transform:translate(0) scale(1);
 }
 
 @media(max-width:560px){
   .nav-links{display:none}.nav-menu{display:block}
-  .hero{padding-top:24px}
+  .hero{padding-top:100px;padding-bottom:120px}
 }
 @media(max-width:380px){
   .intro-name{font-size:32px}
@@ -806,8 +878,8 @@ footer{
   .hero-avatar-wrap{width:160px;height:160px}
   .hero-avatar{width:124px;height:124px}
   .hero-avatar .avatar-fallback{font-size:42px}
-  .hero-title{font-size:36px;letter-spacing:-2px}
-  .hero-role{font-size:13px}
+  .hero-title{font-size:56px;letter-spacing:-2px}
+  .hero-role{font-size:13px;letter-spacing:2px}
   .hero-desc{font-size:10px}
   .btn-hero{font-size:12px;padding:14px 18px}
   .feed-title{font-size:20px;letter-spacing:2px}
@@ -828,6 +900,7 @@ footer{
   .footer-badge{padding:14px 22px}
   .footer-copy{font-size:10px;letter-spacing:1.8px;gap:6px}
   .footer-sub{font-size:6px;letter-spacing:1.2px}
+  .hero-chapters{gap:18px;font-size:10px;bottom:24px}
 }
 @media(min-width:650px){
   .work{grid-template-columns:1fr 1fr}
@@ -873,32 +946,46 @@ footer{
 
 <main class="container">
 
-  <!-- HERO -->
+  <!-- CINEMATIC HERO -->
   <section class="hero reveal-up" id="home">
-    <div class="hero-avatar-wrap">
-      <span class="sparkle">✦</span>
-      <span class="sparkle">✦</span>
-      <span class="sparkle">✦</span>
-      <span class="sparkle">✦</span>
-      <div class="hero-avatar-ring"></div>
-      <div class="hero-avatar">
-        <span class="avatar-fallback">DS</span>
-        <img src="pdf.png" alt="DEVSAINI" onerror="this.style.display='none'">
-      </div>
-      <span class="hero-active"><i></i>ACTIVE</span>
+    <div class="hero-bg-glow" id="heroBgGlow"></div>
+    <div class="hero-particles">
+      <span></span><span></span><span></span><span></span><span></span><span></span>
     </div>
 
-    <div class="hero-hello">HELLO, I'M</div>
-    <h1 class="hero-title">DEV<span>SAINI</span></h1>
-    <div class="hero-role">Developer</div>
-    <p class="hero-desc">AI/ML • Development • Building things. Just keep learning, building, repeating.</p>
+    <div class="hero-parallax" id="heroParallax">
+      <div class="hero-avatar-wrap">
+        <span class="sparkle">✦</span>
+        <span class="sparkle">✦</span>
+        <span class="sparkle">✦</span>
+        <span class="sparkle">✦</span>
+        <div class="hero-avatar-ring"></div>
+        <div class="hero-avatar">
+          <span class="avatar-fallback">DS</span>
+          <img src="pdf.png" alt="DEVSAINI" onerror="this.style.display='none'">
+        </div>
+        <span class="hero-active"><i></i>ACTIVE</span>
+      </div>
 
-    <div class="hero-line"></div>
-    <div class="hero-year">B.Tech / 2026 — PRESENT</div>
+      <div class="hero-hello">HELLO, I'M</div>
+      <h1 class="hero-title">DEV<span>SAINI</span></h1>
+      <div class="hero-role">Developer</div>
+      <p class="hero-desc">AI/ML • Development • Building things. Just keep learning, building, repeating.</p>
 
-    <div class="hero-actions">
-      <a class="btn-hero primary" href="#work"><span class="ic">▣</span> View Projects</a>
-      <a class="btn-hero ghost" href="#contact"><span class="ic">⌁</span> Connect</a>
+      <div class="hero-line"></div>
+      <div class="hero-year">B.Tech / 2026 — PRESENT</div>
+
+      <div class="hero-actions">
+        <a class="btn-hero primary" href="#work"><span class="ic">▣</span> View Projects</a>
+        <a class="btn-hero ghost" href="#contact"><span class="ic">⌁</span> Connect</a>
+      </div>
+    </div>
+
+    <!-- Chapter indicator -->
+    <div class="hero-chapters">
+      <span class="active">01</span>
+      <span>02</span>
+      <span>03</span>
     </div>
   </section>
 
@@ -1200,17 +1287,13 @@ footer{
     <div class="rule reveal-left" style="transition-delay: 0.1s;"></div>
 
     <div class="card contact-card reveal-up">
-
       <a class="contact-row gh" href="https://github.com/devsainid" target="_blank" rel="noopener">
         <span class="c-logo">
           <svg viewBox="0 0 24 24" class="svg-mono" fill="currentColor" aria-hidden="true">
             <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
           </svg>
         </span>
-        <span class="c-info">
-          <b>GitHub</b>
-          <small>github.com/devsainid</small>
-        </span>
+        <span class="c-info"><b>GitHub</b><small>github.com/devsainid</small></span>
         <span class="c-arrow">↗</span>
       </a>
 
@@ -1224,10 +1307,7 @@ footer{
             <path fill="#fbc02d" d="M45,12.298V16.2l-10,7.5V11.2l3.124-2.341C38.868,8.301,39.772,8,40.702,8h0 C43.076,8,45,9.924,45,12.298z"/>
           </svg>
         </span>
-        <span class="c-info">
-          <b>Gmail</b>
-          <small>hellodevsaini@gmail.com</small>
-        </span>
+        <span class="c-info"><b>Gmail</b><small>hellodevsaini@gmail.com</small></span>
         <span class="c-arrow">↗</span>
       </a>
 
@@ -1238,10 +1318,7 @@ footer{
             <path fill="#fff" d="M5.4 11.88l12.53-4.83c.58-.21 1.09.14.9.99l-2.14 10.07c-.16.72-.59.9-1.19.56l-3.3-2.43-1.59 1.54c-.18.18-.32.32-.66.32l.24-3.35 6.11-5.52c.27-.24-.06-.37-.41-.14l-7.55 4.76-3.24-1.01c-.71-.22-.72-.71.14-1.05z"/>
           </svg>
         </span>
-        <span class="c-info">
-          <b>Telegram</b>
-          <small>@hello_devu</small>
-        </span>
+        <span class="c-info"><b>Telegram</b><small>@hello_devu</small></span>
         <span class="c-arrow">↗</span>
       </a>
 
@@ -1253,10 +1330,7 @@ footer{
             <path fill="#fff" d="M12.05 21.79h-.01c-1.77 0-3.51-.48-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88z"/>
           </svg>
         </span>
-        <span class="c-info">
-          <b>WhatsApp</b>
-          <small>+261 3485 85420</small>
-        </span>
+        <span class="c-info"><b>WhatsApp</b><small>+261 3485 85420</small></span>
         <span class="c-arrow">↗</span>
       </a>
 
@@ -1275,13 +1349,9 @@ footer{
             <path fill="url(#igGrad)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
           </svg>
         </span>
-        <span class="c-info">
-          <b>Instagram</b>
-          <small>@eww.dev</small>
-        </span>
+        <span class="c-info"><b>Instagram</b><small>@eww.dev</small></span>
         <span class="c-arrow">↗</span>
       </a>
-
     </div>
   </section>
 
@@ -1330,7 +1400,7 @@ enter.onclick=async()=>{
   }catch(e){}
 };
 
-/* --- INTERSECTION OBSERVER FOR SCROLL ANIMATIONS --- */
+/* --- INTERSECTION OBSERVER --- */
 const observer=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
     if(e.isIntersecting){
@@ -1343,22 +1413,66 @@ document.querySelectorAll(".reveal-up, .reveal-left, .reveal-right, .reveal-zoom
 
 /* --- SCROLL PROGRESS BAR & PARALLAX --- */
 const progressBar = document.getElementById("scroll-progress");
-const parallaxGlow = document.querySelector("body:after"); // Selects the glow
+const parallaxGlow = document.querySelector("body:after");
 
 window.addEventListener("scroll", () => {
-  // Progress Bar
   const scrollTop = window.scrollY;
   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
   const scrolled = (docHeight > 0) ? (scrollTop / docHeight) * 100 : 0;
   progressBar.style.width = scrolled + "%";
 
-  // Parallax Glow effect
   if(parallaxGlow) {
     parallaxGlow.style.transform = `translate(-50%, calc(-50% + ${scrollTop * 0.15}px))`;
   }
 });
 
-/* --- BACK TO TOP BUTTON --- */
+/* ======================================== */
+/* NEW: CINEMATIC MOUSE PARALLAX (KAGE STYLE) */
+/* ======================================== */
+const heroParallax = document.getElementById("heroParallax");
+const heroBgGlow = document.getElementById("heroBgGlow");
+const heroTitle = document.querySelector(".hero-title");
+const heroAvatarWrap = document.querySelector(".hero-avatar-wrap");
+
+function applyHeroParallax(x, y) {
+  if (heroParallax) {
+    heroParallax.style.transform = `translate3d(${x * 15}px, ${y * 15}px, 0)`;
+  }
+  if (heroBgGlow) {
+    heroBgGlow.style.transform = `translate(-50%, -50%) translate3d(${-x * 30}px, ${-y * 30}px, 0)`;
+  }
+  // Extra depth to title (opposite slight)
+  if (heroTitle) {
+    heroTitle.style.transform = `translate3d(${-x * 6}px, ${-y * 6}px, 0)`;
+  }
+  // Extra depth to PFP
+  if (heroAvatarWrap) {
+    heroAvatarWrap.style.transform = `translate3d(${x * 8}px, ${y * 8}px, 0)`;
+  }
+}
+
+// Mouse
+document.addEventListener("mousemove", (e) => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 2;
+  const y = (e.clientY / window.innerHeight - 0.5) * 2;
+  applyHeroParallax(x, y);
+});
+
+// Touch (Mobile)
+document.addEventListener("touchmove", (e) => {
+  const t = e.touches[0];
+  if(!t) return;
+  const x = (t.clientX / window.innerWidth - 0.5) * 2;
+  const y = (t.clientY / window.innerHeight - 0.5) * 2;
+  applyHeroParallax(x, y);
+}, { passive: true });
+
+// Reset on leave
+document.addEventListener("mouseleave", () => {
+  applyHeroParallax(0, 0);
+});
+
+/* --- BACK TO TOP --- */
 const topBtn=document.getElementById("top");
 addEventListener("scroll",()=>topBtn.classList.toggle("show",scrollY>450));
 
