@@ -31,15 +31,25 @@ body:before{
     linear-gradient(90deg,rgba(91,130,255,.035) 1px,transparent 1px);
   background-size:auto,auto,auto,46px 46px,46px 46px;
 }
+/* PARALLAX GLOW */
 body:after{
   content:"";position:fixed;width:60vw;height:60vw;max-width:700px;max-height:700px;
   left:50%;top:38%;transform:translate(-50%,-50%);
   background:radial-gradient(circle,rgba(76,130,255,.12),transparent 68%);
   filter:blur(30px);pointer-events:none;z-index:-1;
+  will-change:transform;
 }
 a{text-decoration:none;color:inherit}
 button{font:inherit}
 .container{width:min(100% - 28px,720px);margin:auto}
+
+/* SCROLL PROGRESS BAR */
+#scroll-progress{
+  position:fixed;top:0;left:0;height:3px;width:0%;
+  background:linear-gradient(90deg,#3b74ff,#76a0ff);
+  z-index:9999;box-shadow:0 0 10px rgba(76,130,255,.8);
+  transition:width .1s ease;
+}
 
 /* INTRO */
 #intro{
@@ -361,13 +371,6 @@ section{padding:25px 0 48px}
   box-shadow:0 0 22px rgba(76,130,255,.35);
 }
 
-.btn{
-  border:1px solid #263657;background:#0b1120;color:#aebde0;
-  border-radius:9px;padding:10px 16px;font-size:9px;cursor:pointer
-}
-.btn.primary{background:var(--blue);border-color:var(--blue);color:white;box-shadow:0 8px 24px rgba(76,130,255,.3)}
-.btn:hover{filter:brightness(1.12);transform:translateY(-1px)}
-
 /* STATS */
 .stats{
   display:grid;grid-template-columns:repeat(3,1fr);
@@ -474,7 +477,6 @@ section{padding:25px 0 48px}
   display:inline-flex;align-items:center;gap:9px;
 }
 
-/* SUBJECT EMOJI — strong glow + float + rotate + staggered */
 .mark-sub .sub-emoji{
   font-size:14px;line-height:1;
   display:inline-block;
@@ -501,7 +503,6 @@ section{padding:25px 0 48px}
     drop-shadow(0 0 24px rgba(76,130,255,.9));
 }
 
-/* Per-row staggered delays — wave effect */
 .mark-row:nth-child(1) .sub-emoji{animation-delay:0s}
 .mark-row:nth-child(2) .sub-emoji{animation-delay:.35s}
 .mark-row:nth-child(3) .sub-emoji{animation-delay:.7s}
@@ -586,13 +587,11 @@ section{padding:25px 0 48px}
 }
 .skill:hover .skill-logo{transform:scale(1.1)}
 .skill-logo svg{position:relative;z-index:2;width:20px;height:20px;display:block}
-.skill-logo .bk-emoji{position:relative;z-index:2;font-size:20px;line-height:1;filter:drop-shadow(0 0 6px rgba(250,204,21,.75))}
 
 .skill-logo.pl{ --c:#5a9fd4; --glow:rgba(55,118,171,.4); --border:rgba(55,118,171,.5); }
 .skill-logo.h5{ --c:#f26a3a; --glow:rgba(227,79,38,.4); --border:rgba(227,79,38,.5); }
 .skill-logo.ai{ --c:#b975f7; --glow:rgba(168,85,247,.4); --border:rgba(168,85,247,.5); }
 .skill-logo.ui{ --c:#f58ac4; --glow:rgba(244,114,182,.4); --border:rgba(244,114,182,.5); }
-.skill-logo.bk{ --c:#facc15; --glow:rgba(250,204,21,.4); --border:rgba(250,204,21,.5); }
 
 /* WORK */
 .work{display:grid;gap:8px}
@@ -784,9 +783,16 @@ footer{
 }
 #top.show{opacity:1;pointer-events:auto}
 
-/* REVEAL */
-.reveal{opacity:0;transform:translateY(14px);transition:opacity .65s ease, transform .65s ease}
-.reveal.show{opacity:1;transform:none}
+/* ADVANCED REVEAL ANIMATIONS */
+.reveal-up{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(0.2,0.8,0.2,1)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:all .8s cubic-bezier(0.2,0.8,0.2,1)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:all .8s cubic-bezier(0.2,0.8,0.2,1)}
+.reveal-zoom{opacity:0;transform:scale(0.92);transition:all .8s cubic-bezier(0.2,0.8,0.2,1)}
+
+.reveal-up.show, .reveal-left.show, .reveal-right.show, .reveal-zoom.show{
+  opacity:1;
+  transform:translate(0) scale(1);
+}
 
 @media(max-width:560px){
   .nav-links{display:none}.nav-menu{display:block}
@@ -819,7 +825,6 @@ footer{
   .c-info small{font-size:7px}
   .skill-logo{width:36px;height:36px;border-radius:10px}
   .skill-logo svg{width:18px;height:18px}
-  .skill-logo .bk-emoji{font-size:18px}
   .footer-badge{padding:14px 22px}
   .footer-copy{font-size:10px;letter-spacing:1.8px;gap:6px}
   .footer-sub{font-size:6px;letter-spacing:1.2px}
@@ -831,6 +836,9 @@ footer{
 </head>
 
 <body>
+
+<!-- SCROLL PROGRESS BAR -->
+<div id="scroll-progress"></div>
 
 <!-- LOADING / ENTER SCREEN -->
 <div id="intro">
@@ -866,7 +874,7 @@ footer{
 <main class="container">
 
   <!-- HERO -->
-  <section class="hero reveal" id="home">
+  <section class="hero reveal-up" id="home">
     <div class="hero-avatar-wrap">
       <span class="sparkle">✦</span>
       <span class="sparkle">✦</span>
@@ -895,20 +903,20 @@ footer{
   </section>
 
   <!-- STATS -->
-  <div class="stats reveal">
+  <div class="stats reveal-up" style="transition-delay: 0.1s;">
     <div class="stat"><b>6+</b><span>Skills Developing</span></div>
     <div class="stat"><b>∞</b><span>Projects Planned</span></div>
     <div class="stat"><b>24/7</b><span>Always Online</span></div>
   </div>
 
   <!-- ABOUT -->
-  <section id="about" class="reveal">
-    <div class="section-label">— ABOUT</div>
-    <h2 class="section-title">Who is DEVSAINI?</h2>
-    <div class="rule"></div>
+  <section id="about">
+    <div class="section-label reveal-up">— ABOUT</div>
+    <h2 class="section-title reveal-left">Who is DEVSAINI?</h2>
+    <div class="rule reveal-left" style="transition-delay: 0.1s;"></div>
 
     <div class="about-grid">
-      <div class="card about-card">
+      <div class="card about-card reveal-left">
         <div class="small">IDENTITY</div>
         <p>A developer who likes to <strong>learn, experiment and build</strong> instead of only talking about ideas.</p>
         <div class="quote">Learning → Building → Breaking → Fixing → Repeat.</div>
@@ -958,13 +966,13 @@ footer{
         </div>
       </div>
 
-      <div class="card about-card">
+      <div class="card about-card reveal-right" style="transition-delay: 0.1s;">
         <div class="small">PHILOSOPHY</div>
         <p>Start small. Understand the basics. Keep improving.</p>
       </div>
 
       <!-- 10TH CLASS MARKS -->
-      <div class="card marks-card">
+      <div class="card marks-card reveal-left">
         <div class="marks-head">
           <div class="marks-title">10<span>TH</span> CLASS</div>
           <div class="marks-meta">UP BOARD · 2024</div>
@@ -987,7 +995,7 @@ footer{
       </div>
 
       <!-- 12TH CLASS MARKS -->
-      <div class="card marks-card">
+      <div class="card marks-card reveal-right">
         <div class="marks-head">
           <div class="marks-title">12<span>TH</span> CLASS</div>
           <div class="marks-meta">UP BOARD · 2026</div>
@@ -1008,7 +1016,7 @@ footer{
         </div>
       </div>
 
-      <div class="card about-stat">
+      <div class="card about-stat reveal-left">
         <b>2026</b>
         <small>Started building</small>
         <br>
@@ -1016,7 +1024,7 @@ footer{
         <small>Ideas in progress</small>
       </div>
 
-      <div class="card about-stat">
+      <div class="card about-stat reveal-right">
         <b>Rarely Online</b>
         <small>Just kidding — usually building.</small>
       </div>
@@ -1024,13 +1032,13 @@ footer{
   </section>
 
   <!-- SKILLS -->
-  <section id="skills" class="reveal">
-    <div class="section-label">— CAPABILITIES</div>
-    <h2 class="section-title">Skills &amp; Mastery</h2>
-    <div class="rule"></div>
+  <section id="skills">
+    <div class="section-label reveal-up">— CAPABILITIES</div>
+    <h2 class="section-title reveal-left">Skills &amp; Mastery</h2>
+    <div class="rule reveal-left" style="transition-delay: 0.1s;"></div>
 
     <div class="skills">
-      <div class="card skill">
+      <div class="card skill reveal-up">
         <div class="skill-top">
           <div class="skill-logo pl">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1047,7 +1055,7 @@ footer{
         <div class="skillbar"><i style="width:30%"></i></div>
       </div>
 
-      <div class="card skill">
+      <div class="card skill reveal-up" style="transition-delay: 0.1s;">
         <div class="skill-top">
           <div class="skill-logo h5">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1065,7 +1073,7 @@ footer{
         <div class="skillbar"><i style="width:45%"></i></div>
       </div>
 
-      <div class="card skill">
+      <div class="card skill reveal-up" style="transition-delay: 0.2s;">
         <div class="skill-top">
           <div class="skill-logo ai">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1089,7 +1097,7 @@ footer{
         <div class="skillbar"><i style="width:73%"></i></div>
       </div>
 
-      <div class="card skill">
+      <div class="card skill reveal-up" style="transition-delay: 0.3s;">
         <div class="skill-top">
           <div class="skill-logo ui">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1108,28 +1116,14 @@ footer{
         </div>
         <div class="skillbar"><i style="width:51%"></i></div>
       </div>
-
-      <div class="card skill">
-        <div class="skill-top">
-          <div class="skill-logo bk">
-            <span class="bk-emoji">😎</span>
-          </div>
-          <div>
-            <div class="skill-name">Bakchodi</div>
-            <div class="skill-note">Unlimited • Certified Pro</div>
-          </div>
-          <div class="skill-pct">99%</div>
-        </div>
-        <div class="skillbar"><i style="width:99%"></i></div>
-      </div>
     </div>
   </section>
 
   <!-- MUSIC / VIDEO PLAYER -->
-  <section class="reveal">
-    <div class="feed-title">DEV'S FEED</div>
-    <div class="section-label">— NOW PLAYING</div>
-    <div class="card music">
+  <section>
+    <div class="feed-title reveal-zoom">DEV'S FEED</div>
+    <div class="section-label reveal-up">— NOW PLAYING</div>
+    <div class="card music reveal-up" style="transition-delay: 0.1s;">
       <div class="music-cover">
         <video id="video" src="song.mp4" playsinline preload="metadata" loop></video>
       </div>
@@ -1144,13 +1138,13 @@ footer{
   </section>
 
   <!-- PROJECTS -->
-  <section id="work" class="reveal">
-    <div class="section-label">— PROJECTS</div>
-    <h2 class="section-title">Selected Work</h2>
-    <div class="rule"></div>
+  <section id="work">
+    <div class="section-label reveal-up">— PROJECTS</div>
+    <h2 class="section-title reveal-left">Selected Work</h2>
+    <div class="rule reveal-left" style="transition-delay: 0.1s;"></div>
 
     <div class="work">
-      <article class="card project">
+      <article class="card project reveal-up">
         <div class="project-top">
           <div class="project-tags">
             <span class="tag">AI / ML</span>
@@ -1164,7 +1158,7 @@ footer{
         <a class="project-link" href="https://github.com/devsainid?tab=repositories" target="_blank">◉ View Profile</a>
       </article>
 
-      <article class="card project">
+      <article class="card project reveal-up" style="transition-delay: 0.1s;">
         <div class="project-top">
           <div class="project-tags">
             <span class="tag">TELEGRAM</span>
@@ -1187,7 +1181,7 @@ footer{
         <a class="project-link" href="https://github.com/devsainid/My-bot-" target="_blank">◉ View on GitHub</a>
       </article>
 
-      <article class="card project">
+      <article class="card project reveal-up" style="transition-delay: 0.2s;">
         <div class="project-top">
           <div class="project-tags"><span class="tag">TOOL</span><span class="tag">BUILD</span></div>
           <span class="project-num">03</span>
@@ -1200,12 +1194,12 @@ footer{
   </section>
 
   <!-- CONTACT -->
-  <section id="contact" class="reveal">
-    <div class="section-label">— CONTACT</div>
-    <h2 class="section-title">Connect</h2>
-    <div class="rule"></div>
+  <section id="contact">
+    <div class="section-label reveal-up">— CONTACT</div>
+    <h2 class="section-title reveal-left">Connect</h2>
+    <div class="rule reveal-left" style="transition-delay: 0.1s;"></div>
 
-    <div class="card contact-card">
+    <div class="card contact-card reveal-up">
 
       <a class="contact-row gh" href="https://github.com/devsainid" target="_blank" rel="noopener">
         <span class="c-logo">
@@ -1291,7 +1285,7 @@ footer{
     </div>
   </section>
 
-  <footer>
+  <footer class="reveal-up">
     <div class="footer-badge">
       <div class="footer-copy">© 2026 <b>DEVSAINI</b> — ALL RIGHTS RESERVED</div>
       <div class="footer-sub">UNAUTHORIZED COPYING OF THIS SITE'S CODE OR DESIGN IS PROHIBITED</div>
@@ -1336,14 +1330,39 @@ enter.onclick=async()=>{
   }catch(e){}
 };
 
+/* --- INTERSECTION OBSERVER FOR SCROLL ANIMATIONS --- */
 const observer=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add("show")});
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add("show");
+    }
+  });
 },{threshold:.08});
-document.querySelectorAll(".reveal").forEach(e=>observer.observe(e));
 
+document.querySelectorAll(".reveal-up, .reveal-left, .reveal-right, .reveal-zoom").forEach(e=>observer.observe(e));
+
+/* --- SCROLL PROGRESS BAR & PARALLAX --- */
+const progressBar = document.getElementById("scroll-progress");
+const parallaxGlow = document.querySelector("body:after"); // Selects the glow
+
+window.addEventListener("scroll", () => {
+  // Progress Bar
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const scrolled = (docHeight > 0) ? (scrollTop / docHeight) * 100 : 0;
+  progressBar.style.width = scrolled + "%";
+
+  // Parallax Glow effect
+  if(parallaxGlow) {
+    parallaxGlow.style.transform = `translate(-50%, calc(-50% + ${scrollTop * 0.15}px))`;
+  }
+});
+
+/* --- BACK TO TOP BUTTON --- */
 const topBtn=document.getElementById("top");
 addEventListener("scroll",()=>topBtn.classList.toggle("show",scrollY>450));
 
+/* --- VIDEO PLAYER --- */
 const video=document.getElementById("video");
 const seek=document.getElementById("seekBar");
 const seekDot=document.getElementById("seekDot");
