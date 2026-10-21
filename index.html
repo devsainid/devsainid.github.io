@@ -15,11 +15,10 @@
   --text:#f1f4ff;--muted:#8b99b5;--dim:#414b62;
   
   /* LIQUID GLASS VARS */
-  --glass-bg: rgba(15, 22, 42, 0.35);
-  --glass-border: rgba(255, 255, 255, 0.1);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-  --glass-highlight: inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  --glass-glow: inset 0 0 20px rgba(76, 130, 255, 0.05);
+  --glass-bg: rgba(15, 22, 42, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6);
+  --glass-highlight: inset 0 1px 1px rgba(255, 255, 255, 0.2);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -33,91 +32,123 @@ button{font:inherit}
 .container{width:min(100% - 28px,720px);margin:auto;position:relative;z-index:10;}
 
 /* ========================================= */
-/* REAL ANIME 2D BACKGROUND & STARS          */
+/* SOLAR SYSTEM BACKGROUND (KAGE STYLE)      */
 /* ========================================= */
-.anime-bg {
+.solar-bg {
   position: fixed; inset: 0; z-index: -5; pointer-events: none; overflow: hidden;
-  background: linear-gradient(180deg, #02040a 0%, #0a1128 50%, #150c1c 100%);
+  background: radial-gradient(circle at 10% 50%, #0a1128 0%, #02040a 70%);
 }
 
-/* ITACHI STYLE DARK RED 2D MOON */
-.anime-moon {
-  position: absolute; top: 15%; right: 15%;
-  width: 280px; height: 280px;
+/* The horizontal track that moves on scroll */
+.solar-track {
+  position: absolute; top: 50%; left: 0;
+  height: 100vh;
+  display: flex; align-items: center;
+  gap: 15vw; /* Space between planets */
+  padding-left: 20vw; /* Start padding so sun is visible */
+  transform: translateY(-50%);
+  will-change: transform;
+  transition: transform 0.1s ease-out; /* Smooth out the scroll */
+}
+
+/* Base Planet Style */
+.planet {
   border-radius: 50%;
-  /* Solid flat anime red with subtle inner shading, NO 3D blur */
-  background: #8b0000; 
-  background: radial-gradient(circle at 50% 50%, #a30000 0%, #7a0000 70%, #4a0000 100%);
+  position: relative;
+  box-shadow: inset -20px -20px 50px rgba(0,0,0,0.8);
+  flex-shrink: 0;
+}
+
+/* THE SUN */
+.sun {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle at 30% 30%, #fff5a1, #ffaa00 40%, #ff4500 80%, #8b0000);
   box-shadow: 
-    0 0 60px rgba(255, 0, 0, 0.2),
-    0 0 120px rgba(255, 0, 0, 0.1);
-  will-change: transform;
-  animation: moonFloat 8s ease-in-out infinite alternate;
+    0 0 100px rgba(255, 165, 0, 0.6),
+    0 0 200px rgba(255, 69, 0, 0.3),
+    inset -20px -20px 50px rgba(139,0,0,0.8);
+  animation: sunPulse 4s infinite alternate;
 }
-/* Anime style moon texture (flat craters) */
-.anime-moon::before {
-  content:""; position: absolute; inset: 0; border-radius: 50%;
-  background: 
-    radial-gradient(circle at 30% 60%, rgba(0,0,0,0.4) 8%, transparent 10%),
-    radial-gradient(circle at 70% 25%, rgba(0,0,0,0.3) 6%, transparent 8%),
-    radial-gradient(circle at 60% 75%, rgba(0,0,0,0.5) 10%, transparent 12%),
-    radial-gradient(circle at 20% 20%, rgba(0,0,0,0.2) 5%, transparent 7%);
-}
-@keyframes moonFloat {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(15px); }
+@keyframes sunPulse {
+  0% { box-shadow: 0 0 80px rgba(255, 165, 0, 0.5), 0 0 180px rgba(255, 69, 0, 0.2), inset -20px -20px 50px rgba(139,0,0,0.8); }
+  100% { box-shadow: 0 0 120px rgba(255, 165, 0, 0.8), 0 0 250px rgba(255, 69, 0, 0.4), inset -20px -20px 50px rgba(139,0,0,0.8); }
 }
 
-/* STARS / PARTICLES MOVING */
-.anime-particles { position: absolute; inset: 0; overflow: hidden; }
-.anime-particles span {
-  position: absolute; width: 4px; height: 4px; border-radius: 50%;
-  background: #fff; box-shadow: 0 0 8px #fff, 0 0 15px rgba(255,255,255,0.5);
-  opacity: 0; 
-  animation: starMove 10s linear infinite;
-}
-/* Different positions and speeds for stars */
-.anime-particles span:nth-child(1) { left: 10%; top: 80%; animation-duration: 12s; animation-delay: 0s; }
-.anime-particles span:nth-child(2) { left: 30%; top: 60%; animation-duration: 15s; animation-delay: 2s; background: #ff6b6b; box-shadow: 0 0 8px #ff6b6b; }
-.anime-particles span:nth-child(3) { left: 60%; top: 90%; animation-duration: 10s; animation-delay: 4s; }
-.anime-particles span:nth-child(4) { left: 80%; top: 40%; animation-duration: 18s; animation-delay: 1s; background: #4c82ff; box-shadow: 0 0 8px #4c82ff; }
-.anime-particles span:nth-child(5) { left: 50%; top: 30%; animation-duration: 14s; animation-delay: 5s; }
-.anime-particles span:nth-child(6) { left: 90%; top: 70%; animation-duration: 11s; animation-delay: 3s; }
-.anime-particles span:nth-child(7) { left: 20%; top: 20%; animation-duration: 16s; animation-delay: 7s; background: #b975f7; box-shadow: 0 0 8px #b975f7; }
+/* MERCURY */
+.mercury { width: 80px; height: 80px; background: #8c8c8c; background-image: radial-gradient(circle at 20% 20%, #b0b0b0 10%, transparent 20%), radial-gradient(circle at 70% 60%, #666 15%, transparent 25%); }
 
-@keyframes starMove {
-  0% { transform: translateY(0) scale(0.5); opacity: 0; }
-  20% { opacity: 1; }
-  80% { opacity: 1; }
-  100% { transform: translateY(-200px) scale(1.2); opacity: 0; }
-}
+/* VENUS */
+.venus { width: 130px; height: 130px; background: #e6cca0; background-image: radial-gradient(circle at 30% 70%, #cca878 20%, transparent 40%); }
 
-/* LAYERED MOUNTAINS */
-.anime-mountains {
-  position: absolute; bottom: 0; left: 0; width: 100%; height: 60vh;
-  display: flex; flex-direction: column; justify-content: flex-end;
-  will-change: transform;
-}
-.anime-mountains svg { width: 100%; height: auto; display: block; }
+/* EARTH */
+.earth { width: 150px; height: 150px; background: #2b65ff; background-image: radial-gradient(circle at 40% 30%, #4caf50 10%, transparent 20%), radial-gradient(circle at 70% 60%, #4caf50 15%, transparent 30%); border: 2px solid rgba(255,255,255,0.2); }
 
-/* MOVING MIST */
-.anime-mist {
-  position: absolute; bottom: 0; left: 0; width: 200%; height: 40vh;
-  background: linear-gradient(to top, rgba(4,7,15,0.95) 20%, rgba(20,30,60,0.2) 70%, transparent 100%);
-  filter: blur(15px);
-  pointer-events: none;
-  will-change: transform;
-  animation: mistDrift 15s linear infinite;
+/* MARS */
+.mars { width: 100px; height: 100px; background: #c1440e; background-image: radial-gradient(circle at 50% 50%, #e05a1a 20%, transparent 40%); }
+
+/* JUPITER */
+.jupiter { width: 280px; height: 280px; background: #d8ca9d; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(139, 69, 19, 0.2) 10px, rgba(139, 69, 19, 0.2) 20px); }
+
+/* SATURN */
+.saturn {
+  width: 240px; height: 240px; background: #e3d5a1;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 15px, rgba(180, 160, 100, 0.3) 15px, rgba(180, 160, 100, 0.3) 30px);
 }
-@keyframes mistDrift {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
+.saturn::after {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  width: 380px; height: 80px; border-radius: 50%;
+  border: 15px solid rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%) rotate(-20deg);
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
 }
 
-/* OVERLAY FOR TEXT READABILITY */
-.anime-overlay {
+/* URANUS */
+.uranus { width: 180px; height: 180px; background: #4fd1c5; box-shadow: inset -10px -10px 30px rgba(0,0,0,0.5); }
+
+/* NEPTUNE */
+.neptune { width: 170px; height: 170px; background: #2b6cb0; box-shadow: inset -10px -10px 30px rgba(0,0,0,0.5); }
+
+/* Fixed Stars Background */
+.stars-overlay {
+  position: absolute; inset: 0;
+  background-image: 
+    radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 40px 70px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 50px 160px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 90px 40px, #fff, rgba(0,0,0,0)),
+    radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0)),
+    radial-gradient(1px 1px at 160px 120px, #fff, rgba(0,0,0,0));
+  background-repeat: repeat;
+  background-size: 200px 200px;
+  opacity: 0.3;
+  animation: starDrift 60s linear infinite;
+}
+@keyframes starDrift {
+  0% { background-position: 0 0; }
+  100% { background-position: -200px 0; }
+}
+
+/* Dark Overlay to make text readable */
+.bg-overlay {
   position: fixed; inset: 0; z-index: -4; pointer-events: none;
-  background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(2,4,10,0.85) 100%);
+  background: linear-gradient(to right, rgba(2,4,10,0.9) 0%, rgba(2,4,10,0.4) 50%, rgba(2,4,10,0.8) 100%);
+}
+
+/* CLICK TAP EFFECT (BURST) */
+.click-burst {
+  position: fixed;
+  width: 10px; height: 10px;
+  background: rgba(120, 170, 255, 0.9);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 20px 5px rgba(76, 130, 255, 0.8);
+  animation: burstAnim 0.6s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+@keyframes burstAnim {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(6); opacity: 0; box-shadow: 0 0 50px 20px rgba(76, 130, 255, 0); }
 }
 
 /* ========================================= */
@@ -248,7 +279,7 @@ nav{
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--glass-border);
-  border-top: 1px solid rgba(255,255,255,0.2);
+  border-top: 1px solid rgba(255,255,255,0.25);
   box-shadow: var(--glass-shadow), var(--glass-highlight);
 }
 .nav-brand{font-size:11px;font-weight:850;letter-spacing:.3px}
@@ -477,12 +508,12 @@ section{padding:25px 0 48px}
 /* ========================================= */
 .card{
   background: var(--glass-bg);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--glass-border);
-  border-top: 1px solid rgba(255,255,255,0.15);
+  border-top: 1px solid rgba(255,255,255,0.2);
   border-radius:16px;
-  box-shadow: var(--glass-shadow), var(--glass-highlight), var(--glass-glow);
+  box-shadow: var(--glass-shadow), var(--glass-highlight);
   transition: all .3s ease;
   position:relative;
   overflow:hidden;
@@ -490,12 +521,12 @@ section{padding:25px 0 48px}
 /* Subtle liquid highlight */
 .card::before {
   content:"";position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);
   opacity:0.5;
 }
 .card:hover{
-  border-color:rgba(255,255,255,0.25);
-  box-shadow: 0 15px 45px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.2), 0 0 30px rgba(76,130,255,0.15);
+  border-color:rgba(255,255,255,0.3);
+  box-shadow: 0 15px 45px rgba(0,0,0,0.7), inset 0 1px 2px rgba(255,255,255,0.3), 0 0 30px rgba(76,130,255,0.2);
   transform: translateY(-2px);
 }
 
@@ -504,7 +535,7 @@ section{padding:25px 0 48px}
   display:grid;grid-template-columns:repeat(3,1fr);
   margin:0 0 43px;
   background: var(--glass-bg);
-  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
   border: 1px solid var(--glass-border);
   border-radius:16px;
   box-shadow: var(--glass-shadow), var(--glass-highlight);
@@ -798,6 +829,12 @@ footer{text-align:center;padding:40px 0 100px;display:flex;flex-direction:column
 @media(max-width:560px){
   .nav-links{display:none}.nav-menu{display:block}
   .hero{padding-top:100px;padding-bottom:120px}
+  .solar-track { gap: 80vw; padding-left: 10vw; } /* Adjust for mobile spacing */
+  .sun { width: 250px; height: 250px; }
+  .jupiter, .saturn { width: 180px; height: 180px; }
+  .saturn::after { width: 280px; height: 60px; border-width: 10px; }
+  .earth, .uranus, .neptune { width: 100px; height: 100px; }
+  .venus, .mars, .mercury { width: 70px; height: 70px; }
 }
 @media(max-width:380px){
   .intro-name{font-size:32px}
@@ -830,7 +867,6 @@ footer{text-align:center;padding:40px 0 100px;display:flex;flex-direction:column
   .footer-copy{font-size:10px;letter-spacing:1.8px;gap:6px}
   .footer-sub{font-size:6px;letter-spacing:1.2px}
   .hero-chapters{gap:18px;font-size:10px;bottom:24px}
-  .anime-moon{width:150px;height:150px;top:10%;right:5%;}
 }
 @media(min-width:650px){
   .work{grid-template-columns:1fr 1fr}
@@ -840,28 +876,24 @@ footer{text-align:center;padding:40px 0 100px;display:flex;flex-direction:column
 
 <body>
 
-<!-- NEW ANIME BACKGROUND -->
-<div class="anime-bg">
-  <div class="anime-moon" id="animeMoon"></div>
-  <div class="anime-particles">
-    <!-- STARS MOVING -->
-    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+<!-- SOLAR SYSTEM BACKGROUND -->
+<div class="solar-bg">
+  <div class="stars-overlay"></div>
+  <div class="solar-track" id="solarTrack">
+    <!-- Sun to Neptune -->
+    <div class="planet sun"></div>
+    <div class="planet mercury"></div>
+    <div class="planet venus"></div>
+    <div class="planet earth"></div>
+    <div class="planet mars"></div>
+    <div class="planet jupiter"></div>
+    <div class="planet saturn"></div>
+    <div class="planet uranus"></div>
+    <div class="planet neptune"></div>
   </div>
-  <div class="anime-mountains" id="animeMountains">
-    <!-- SVG for layered mountains -->
-    <svg viewBox="0 0 1440 320" preserveAspectRatio="none" style="height: 100%; width: 100%;">
-      <!-- Back Mountain Layer -->
-      <path fill="#080d1c" d="M0,224L60,202.7C120,181,240,139,360,133.3C480,128,600,160,720,186.7C840,213,960,235,1080,218.7C1200,203,1320,149,1380,122.7L1440,96L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
-      <!-- Mid Mountain Layer -->
-      <path fill="#0a1125" d="M0,288L80,266.7C160,245,320,203,480,208C640,213,800,267,960,272C1120,277,1280,235,1360,213.3L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
-      <!-- Front Mountain Layer -->
-      <path fill="#04070f" d="M0,320L120,288C240,256,480,192,720,192C960,192,1200,256,1320,288L1440,320L1440,320L1320,320C1200,320,960,320,720,320C480,320,240,320,120,320L0,320Z"></path>
-    </svg>
-  </div>
-  <div class="anime-mist"></div>
 </div>
-<!-- Overlay to keep text readable -->
-<div class="anime-overlay"></div>
+<!-- Dark overlay for readability -->
+<div class="bg-overlay"></div>
 
 <!-- SCROLL PROGRESS BAR -->
 <div id="scroll-progress"></div>
@@ -1363,25 +1395,29 @@ const observer=new IntersectionObserver(entries=>{
 
 document.querySelectorAll(".reveal-up, .reveal-left, .reveal-right, .reveal-zoom").forEach(e=>observer.observe(e));
 
-/* --- SCROLL PROGRESS BAR & PARALLAX --- */
+/* --- SCROLL PROGRESS BAR & SOLAR SYSTEM PARALLAX --- */
 const progressBar = document.getElementById("scroll-progress");
-const animeMoon = document.getElementById("animeMoon");
-const animeMountains = document.getElementById("animeMountains");
+const solarTrack = document.getElementById("solarTrack");
 
-window.addEventListener("scroll", () => {
+// Function to handle both scroll progress and horizontal background movement
+function handleScroll() {
   const scrollTop = window.scrollY;
   const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  
+  // 1. Update Progress Bar
   const scrolled = (docHeight > 0) ? (scrollTop / docHeight) * 100 : 0;
   progressBar.style.width = scrolled + "%";
 
-  // Background Parallax Scroll Effect
-  if(animeMoon) {
-    animeMoon.style.transform = `translateY(${scrollTop * 0.25}px)`; // Moon moves slower
+  // 2. Move Solar System Right to Left (Scroll Down)
+  // The multiplier (0.8) controls how fast it moves. Adjust if needed.
+  if (solarTrack) {
+    solarTrack.style.transform = `translateY(-50%) translateX(${-scrollTop * 0.8}px)`;
   }
-  if(animeMountains) {
-    animeMountains.style.transform = `translateY(${scrollTop * 0.1}px)`; // Mountains move relative to scroll
-  }
-});
+}
+
+window.addEventListener("scroll", handleScroll);
+// Initialize on load
+handleScroll();
 
 /* --- CINEMATIC MOUSE PARALLAX (KAGE STYLE) --- */
 const heroParallax = document.getElementById("heroParallax");
@@ -1411,6 +1447,24 @@ document.addEventListener("touchmove", (e) => {
 }, { passive: true });
 
 document.addEventListener("mouseleave", () => applyHeroParallax(0, 0));
+
+/* --- CLICK / TAP BURST EFFECT --- */
+window.addEventListener('pointerdown', (e) => {
+  // Create the burst element
+  const burst = document.createElement('div');
+  burst.className = 'click-burst';
+  
+  // Position it exactly where the user clicked/tapped
+  burst.style.left = e.clientX + 'px';
+  burst.style.top = e.clientY + 'px';
+  
+  document.body.appendChild(burst);
+  
+  // Remove it after the animation finishes (0.6s)
+  setTimeout(() => {
+    burst.remove();
+  }, 600);
+});
 
 /* --- BACK TO TOP --- */
 const topBtn=document.getElementById("top");
